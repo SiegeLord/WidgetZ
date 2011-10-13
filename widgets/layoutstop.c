@@ -1,6 +1,10 @@
 #include "../widgetz_internal.h"
 
 /*
+Title: Layout Stop
+*/
+
+/*
 Function: wz_init_layout_stop
 */
 void wz_init_layout_stop(WZ_WIDGET* box, WZ_WIDGET* parent, int id)

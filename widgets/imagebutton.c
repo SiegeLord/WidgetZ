@@ -1,7 +1,7 @@
 #include "../widgetz_internal.h"
 
 /*
-Title: Button
+Title: Image Button
 
 Section: Internal
 
