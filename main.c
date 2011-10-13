@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
 	
 	// Start the event queue to handle keyboard input and our timer
 	ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
-	al_register_event_source(queue, (ALLEGRO_EVENT_SOURCE*)al_get_keyboard());
-	al_register_event_source(queue, (ALLEGRO_EVENT_SOURCE*)al_get_mouse());
+	al_register_event_source(queue, al_get_keyboard_event_source());
+	al_register_event_source(queue, al_get_mouse_event_source());
 	
 	int refresh_rate = 60;
 	double fixed_dt = 1.0f / refresh_rate;
@@ -37,11 +37,8 @@ int main(int argc, char *argv[])
 	*/
 	WZ_DEF_THEME theme = wz_def_theme;
 	theme.font = font;
-	theme.color1 = al_map_rgba_f(0.6, 0.6, 0.6, 1);
-	theme.color2 = al_map_rgba_f(1, 1, 1, 1);
-	theme.color3 = al_map_rgba_f(0.8, 0.8, 0.4, 1);
-	theme.color4 = al_map_rgba_f(0.25, 0.25, 0.25, 1);
-	theme.color5 = al_map_rgba_f(0.1, 0.1, 0.1, 1);
+	theme.color1 = al_map_rgba_f(0, 0.3, 0, 1);
+	theme.color2 = al_map_rgba_f(1, 1, 0, 1);
 	
 	/*
 	Define root gui element
@@ -154,5 +151,4 @@ int main(int argc, char *argv[])
 	
 	return 0;
 }
-END_OF_MAIN()
 
