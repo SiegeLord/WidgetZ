@@ -464,7 +464,7 @@ int wz_widget_rect_test(WZ_WIDGET* wgt, float x, float y)
 }
 
 /*
-Function: wz_widget_rect_test
+Function: wz_widget_rect_test_all
 
 Like <wz_widget_rect_test> but traverses the widget tree to see if any of its branches
 intersect with the passed coordinates. Hidden widgets are ignored.
