@@ -8,6 +8,55 @@
 Title: Theme Stuff
 */
 
+static void wz_draw_3d_rectangle(float x1, float y1, float x2, float y2, float border, ALLEGRO_COLOR col, bool invert)
+{
+	ALLEGRO_VERTEX vtx[6];
+	ALLEGRO_COLOR hi, lo;
+	int ii;
+	
+	if(invert)
+	{
+		lo = wz_scale_color(col, 1.5);
+		hi = wz_scale_color(col, 0.5);
+	}
+	else
+	{
+		hi = wz_scale_color(col, 1.5);
+		lo = wz_scale_color(col, 0.5);
+	}
+	
+	for(ii = 0; ii < 6; ii++)
+	{
+		vtx[ii].color = hi;
+		vtx[ii].z = 0;
+	}
+	
+	vtx[0].x = x1 + border; vtx[0].y = y1 + border;
+	vtx[1].x = x1 + border; vtx[1].y = y2 - border;
+	vtx[2].x = x1;          vtx[2].y = y2;
+	vtx[3].x = x1;          vtx[3].y = y1;
+	vtx[4].x = x2;          vtx[4].y = y1;
+	vtx[5].x = x2 - border; vtx[5].y = y1 + border;
+	
+	al_draw_prim(vtx, 0, 0, 0, 6, ALLEGRO_PRIM_TRIANGLE_FAN);
+	
+	vtx[0].x = x2 - border; vtx[0].y = y2 - border;
+	vtx[1].x = x1 + border; vtx[1].y = y2 - border;
+	vtx[2].x = x1;          vtx[2].y = y2;
+	vtx[3].x = x2;          vtx[3].y = y2;
+	vtx[4].x = x2;          vtx[4].y = y1;
+	vtx[5].x = x2 - border; vtx[5].y = y1 + border;
+	
+	for(ii = 0; ii < 6; ii++)
+	{
+		vtx[ii].color = lo;
+	}
+	
+	al_draw_prim(vtx, 0, 0, 0, 6, ALLEGRO_PRIM_TRIANGLE_FAN);
+	
+	al_draw_filled_rectangle(x1 + border, y1 + border, x2 - border, y2 - border, col);
+}
+
 //My version of it
 //returns the token length, and skips the first occurence if it is the first character
 //char *wz_ustrpbrk(AL_CONST char *s, AL_CONST char *set, int* index)
@@ -196,32 +245,29 @@ void wz_def_draw_button(WZ_THEME* theme, float x, float y, float w, float h, ALL
 {
 	WZ_DEF_THEME* thm = (WZ_DEF_THEME*)theme;
 	
-	ALLEGRO_COLOR border_col;
+	ALLEGRO_COLOR button_col;
 	ALLEGRO_COLOR text_col;
 	
+	bool invert = false;
+	
+	button_col = thm->color1;
+	text_col = thm->color2;
+		
 	if (style & WZ_STYLE_FOCUSED)
 	{
-		border_col = wz_scale_color(thm->color1, 1.5);
-	}
-	else if (style & WZ_STYLE_DISABLED)
-	{
-		border_col = wz_scale_color(thm->color1, 0.5);
-	}
-	else if (style & WZ_STYLE_DOWN)
-	{
-		border_col = thm->color2;
-	}
-	else
-	{
-		border_col = thm->color1;
+		button_col = wz_scale_color(thm->color1, 1.25);
 	}
 	if (style & WZ_STYLE_DISABLED)
+	{
+		button_col = wz_scale_color(thm->color1, 0.5);
 		text_col = wz_scale_color(thm->color2, 0.5);
-	else
-		text_col = thm->color2;
-		
-	al_draw_filled_rectangle(x, y, x + w, y + h, wz_scale_color(thm->color1, 0.75));
-	al_draw_rectangle(x, y, x + w, y + h, border_col, 1);
+	}
+	if (style & WZ_STYLE_DOWN)
+	{
+		invert = true;
+	}
+	
+	wz_draw_3d_rectangle(x, y, x + w, y + h, 2, button_col, invert);
 	wz_draw_multi_text(x, y, w, h, WZ_ALIGN_CENTRE, WZ_ALIGN_CENTRE, text_col, thm->font, text);
 }
 
@@ -246,15 +292,15 @@ void wz_def_draw_scroll(struct WZ_THEME* theme, float x, float y, float w, float
 	
 	if (style & WZ_STYLE_FOCUSED)
 	{
-		col = wz_scale_color(thm->color2, 1.5);
+		col = wz_scale_color(thm->color1, 1.5);
 	}
 	else if (style & WZ_STYLE_DISABLED)
 	{
-		col = wz_scale_color(thm->color2, 0.5);
+		col = wz_scale_color(thm->color1, 0.5);
 	}
 	else
 	{
-		col = thm->color2;
+		col = thm->color1;
 	}
 	
 	if (vertical)
@@ -262,16 +308,17 @@ void wz_def_draw_scroll(struct WZ_THEME* theme, float x, float y, float w, float
 		xpos = x + w / 2;
 		ypos = y + fraction * h;
 		
-		al_draw_line(xpos, y, xpos, y + h, col, 1);
+		wz_draw_3d_rectangle(xpos - 2, y, xpos + 2, y + h, 1, wz_scale_color(thm->color1, 0.75), true);
 	}
 	else
 	{
 		xpos = x + fraction * w;
 		ypos = y + h / 2;
 		
-		al_draw_line(x, ypos, x + w, ypos, col, 1);
+		wz_draw_3d_rectangle(x, ypos - 2, x + w, ypos + 2, 1, wz_scale_color(thm->color1, 0.75), true);
 	}
-	al_draw_rectangle(xpos - 4, ypos - 4, xpos + 4, ypos + 4, col, 1);
+	
+	wz_draw_3d_rectangle(xpos - 4, ypos - 4, xpos + 5, ypos + 5, 1, col, false);
 }
 
 void wz_def_draw_editbox(struct WZ_THEME* theme, float x, float y, float w, float h, int cursor_pos, ALLEGRO_USTR* text, int style)
@@ -288,37 +335,25 @@ void wz_def_draw_editbox(struct WZ_THEME* theme, float x, float y, float w, floa
 	ALLEGRO_USTR_INFO info;
 	ALLEGRO_USTR* token = al_ref_ustr(&info, text, 0, offset);
 	
-	ALLEGRO_COLOR border_col;
-	ALLEGRO_COLOR text_col;
+	ALLEGRO_COLOR border_col = thm->color1;
+	ALLEGRO_COLOR text_col = thm->color2;
 	
 	if (style & WZ_STYLE_FOCUSED)
 	{
 		border_col = wz_scale_color(thm->color1, 1.5);
 	}
-	else if (style & WZ_STYLE_DISABLED)
+	if (style & WZ_STYLE_DISABLED)
 	{
 		border_col = wz_scale_color(thm->color1, 0.5);
-	}
-	else if (style & WZ_STYLE_DOWN)
-	{
-		border_col = thm->color2;
-	}
-	else
-	{
-		border_col = thm->color1;
+		text_col = wz_scale_color(thm->color2, 0.5);
 	}
 	
-	if (style & WZ_STYLE_DISABLED)
-		text_col = wz_scale_color(thm->color2, 0.5);
-	else
-		text_col = thm->color2;
+	wz_draw_3d_rectangle(x, y, x + w, y + h, 1, border_col, true);
 	
 	al_get_clipping_rectangle(&cx, &cy, &cw, &ch);
-	al_set_clipping_rectangle(x, y, w, h);
-	wz_draw_single_text(x, y, w, h, WZ_ALIGN_LEFT, WZ_ALIGN_CENTRE, text_col, thm->font, token);
+	al_set_clipping_rectangle(x + 2, y + 2, w - 4, h - 4);
+	wz_draw_single_text(x + 2, y + 2, w - 4, h - 4, WZ_ALIGN_LEFT, WZ_ALIGN_CENTRE, text_col, thm->font, token);
 	al_set_clipping_rectangle(cx, cy, cw, ch);
-	
-	al_draw_rectangle(x, y, x + w, y + h, border_col, 1);
 	
 	if (style & WZ_STYLE_FOCUSED)
 	{
@@ -328,7 +363,7 @@ void wz_def_draw_editbox(struct WZ_THEME* theme, float x, float y, float w, floa
 			token = al_ref_ustr(&info, text, 0, offset);
 			float len = al_get_ustr_width(thm->font, token);
 			float halfheight = al_get_font_line_height(thm->font) / 2.0f;
-			al_draw_line(x + len, y + h / 2 - halfheight, x + len, y + h / 2 + halfheight, border_col, 1);
+			al_draw_line(x + 2 + len, y + 2 + h / 2 - halfheight, x + 2 + len, y + 2 + h / 2 + halfheight, text_col, 1);
 		}
 	}
 }

@@ -447,6 +447,16 @@ ALLEGRO_COLOR wz_scale_color(ALLEGRO_COLOR c, float scale)
 	ret.r = c.r * scale;
 	ret.g = c.g * scale;
 	ret.b = c.b * scale;
+	
+	if(ret.r > 1)
+		ret.r = 1;
+	if(ret.g > 1)
+		ret.g = 1;
+	if(ret.b > 1)
+		ret.b = 1;
+	if(ret.a > 1)
+		ret.a = 1;
+	
 	return ret;
 }
 
