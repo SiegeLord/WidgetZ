@@ -65,27 +65,26 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 	{
 		case WZ_DRAW:
 		{
-			int size = al_ustr_size(box->text);
-			int scroll_offset = al_ustr_offset(box->text, box->scroll_pos);
-			ALLEGRO_USTR_INFO info;
-			ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, scroll_offset, size);
-			
-			int pos = box->cursor_pos - box->scroll_pos;
 			if (wgt->flags & WZ_STATE_HIDDEN)
 			{
 				ret = 0;
 			}
-			else if (wgt->flags & WZ_STATE_DISABLED)
-			{
-				wgt->theme->draw_editbox(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, pos, text, WZ_STYLE_DISABLED);
-			}
-			else if (wgt->flags & WZ_STATE_HAS_FOCUS)
-			{
-				wgt->theme->draw_editbox(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, pos, text, WZ_STYLE_FOCUSED);
-			}
 			else
 			{
-				wgt->theme->draw_editbox(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, pos, text, WZ_STYLE_DEFAULT);
+				int size = al_ustr_size(box->text);
+				int scroll_offset = al_ustr_offset(box->text, box->scroll_pos);
+				ALLEGRO_USTR_INFO info;
+				ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, scroll_offset, size);
+				
+				int pos = box->cursor_pos - box->scroll_pos;
+			
+				int flags = 0;
+				if(wgt->flags & WZ_STATE_DISABLED)
+					flags = WZ_STYLE_DISABLED;
+				else if(wgt->flags & WZ_STATE_HAS_FOCUS)
+					flags = WZ_STYLE_FOCUSED;
+			
+				wgt->theme->draw_editbox(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, pos, text, flags);
 			}
 			break;
 		}

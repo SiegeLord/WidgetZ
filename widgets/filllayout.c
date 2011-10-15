@@ -24,7 +24,7 @@ int wz_fill_layout_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			else
 			{
-				wgt->theme->draw_box(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, WZ_STYLE_DEFAULT);
+				wgt->theme->draw_box(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, 0);
 			}
 			break;
 		}

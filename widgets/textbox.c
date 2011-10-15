@@ -22,13 +22,10 @@ int wz_textbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			{
 				ret = 0;
 			}
-			else if (wgt->flags & WZ_STATE_DISABLED)
-			{
-				wgt->theme->draw_textbox(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, box->h_align, box->v_align, box->text, WZ_STYLE_DISABLED);
-			}
 			else
 			{
-				wgt->theme->draw_textbox(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, box->h_align, box->v_align, box->text, WZ_STYLE_DEFAULT);
+				int flags = (wgt->flags & WZ_STATE_DISABLED) ? WZ_STYLE_DISABLED : 0;
+				wgt->theme->draw_textbox(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, box->h_align, box->v_align, box->text, flags);
 			}
 			break;
 		}

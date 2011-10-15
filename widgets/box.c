@@ -32,18 +32,12 @@ int wz_box_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			else
 			{
-				if (wgt->flags & WZ_STATE_HAS_FOCUS)
-				{
-					wgt->theme->draw_box(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, WZ_STYLE_FOCUSED);
-				}
-				else
-				{
-					wgt->theme->draw_box(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, WZ_STYLE_DEFAULT);
-				}
+				int flags = (wgt->flags & WZ_STATE_HAS_FOCUS) ? WZ_STYLE_FOCUSED : 0;
+				wgt->theme->draw_box(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, flags);
 			}
 		}
 		default:
-		ret = 0;
+			ret = 0;
 	}
 	if (ret == 0)
 		ret = wz_widget_proc(wgt, event);

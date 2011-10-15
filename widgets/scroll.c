@@ -19,26 +19,23 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 	{
 		case WZ_DRAW:
 		{
-			float fraction = ((float)scl->cur_pos) / ((float)scl->max_pos);
+			int flags = 0;
 			if (wgt->flags & WZ_STATE_HIDDEN)
 			{
 				ret = 0;
 			}
 			else if (wgt->flags & WZ_STATE_DISABLED)
 			{
-				wgt->theme->draw_scroll(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, fraction , WZ_STYLE_DISABLED);
+				flags = WZ_STYLE_DISABLED;
 			}
-			else
+			else if (wgt->flags & WZ_STATE_HAS_FOCUS)
 			{
-				if (wgt->flags & WZ_STATE_HAS_FOCUS)
-				{
-					wgt->theme->draw_scroll(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, fraction, WZ_STYLE_FOCUSED);
-				}
-				else
-				{
-					wgt->theme->draw_scroll(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, fraction, WZ_STYLE_DEFAULT);
-				}
+				flags = WZ_STYLE_FOCUSED;
 			}
+			
+			float fraction = ((float)scl->cur_pos) / ((float)scl->max_pos);
+			wgt->theme->draw_scroll(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, fraction, flags);
+			
 			break;
 		}
 		case WZ_SET_SCROLL_POS:

@@ -288,15 +288,13 @@ WZ_STATE_LAYOUT           - Widget is a layout widget
 /*
 Constants: Widget Styles
 
-WZ_STYLE_DEFAULT           - Default style
 WZ_STYLE_DISABLED          - Widget is disabled
 WZ_STYLE_FOCUSED           - Widget has focus
 WZ_STYLE_DOWN              - Widget is down
 */
-#define WZ_STYLE_DEFAULT            02
-#define WZ_STYLE_DISABLED           04
-#define WZ_STYLE_FOCUSED           010
-#define WZ_STYLE_DOWN              040
+#define WZ_STYLE_DISABLED           02
+#define WZ_STYLE_FOCUSED            04
+#define WZ_STYLE_DOWN              020
 
 /*
 Enum: Events

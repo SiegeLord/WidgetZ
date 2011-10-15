@@ -34,18 +34,13 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			else
 			{
+				int flags = 0;
 				if (but->down)
-				{
-					wgt->theme->draw_button(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, but->text, WZ_STYLE_DOWN);
-				}
-				else if (wgt->flags & WZ_STATE_HAS_FOCUS)
-				{
-					wgt->theme->draw_button(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, but->text, WZ_STYLE_FOCUSED);
-				}
-				else
-				{
-					wgt->theme->draw_button(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, but->text, WZ_STYLE_DEFAULT);
-				}
+					flags |= WZ_STYLE_DOWN;
+				if (wgt->flags & WZ_STATE_HAS_FOCUS)
+					flags |= WZ_STYLE_FOCUSED;
+				
+				wgt->theme->draw_button(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, but->text, flags);
 			}
 			break;
 		}
