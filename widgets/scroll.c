@@ -113,7 +113,7 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				ret = 0;
 			break;
 		}
-		case ALLEGRO_EVENT_KEY_DOWN:
+		case ALLEGRO_EVENT_KEY_CHAR:
 		{
 			int old_pos = scl->cur_pos;;
 			switch (event->keyboard.keycode)

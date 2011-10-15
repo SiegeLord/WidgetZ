@@ -121,87 +121,84 @@ int wz_widget_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				wz_send_event(wgt, &ev);
 			}
 			else
-				ret = 0;
-			break;
-		}
-		case ALLEGRO_EVENT_KEY_DOWN:
-		{
-			switch (event->keyboard.keycode)
 			{
-				case ALLEGRO_KEY_TAB:
+				switch (event->keyboard.keycode)
 				{
-					if (wgt->first_child != 0)
+					case ALLEGRO_KEY_TAB:
 					{
+						if (wgt->first_child != 0)
+						{
+							ret = 0;
+						}
+						else if (event->keyboard.modifiers & 1)
+						{
+							wz_ask_parent_to_focus_prev(wgt);
+						}
+						else
+						{
+							wz_ask_parent_to_focus_next(wgt);
+						}
+						break;
+					}
+					case ALLEGRO_KEY_UP:
+					{
+						if (wgt->first_child != 0)
+						{
+							ret = 0;
+						}
+						else if (wgt->parent != 0)
+						{
+							wz_ask_parent_for_focus(wz_get_widget_dir(wgt, 0));
+						}
+						else
+							ret = 0;
+						break;
+					}
+					case ALLEGRO_KEY_RIGHT:
+					{
+						if (wgt->first_child != 0)
+						{
+							ret = 0;
+						}
+						else if (wgt->parent != 0)
+						{
+							wz_ask_parent_for_focus(wz_get_widget_dir(wgt, 1));
+						}
+						else
+							ret = 0;
+						break;
+					}
+					case ALLEGRO_KEY_DOWN:
+					{
+						if (wgt->first_child != 0)
+						{
+							ret = 0;
+						}
+						else if (wgt->parent != 0)
+						{
+							wz_ask_parent_for_focus(wz_get_widget_dir(wgt, 2));
+						}
+						else
+							ret = 0;
+						break;
+					}
+					case ALLEGRO_KEY_LEFT:
+					{
+						if (wgt->first_child != 0)
+						{
+							ret = 0;
+						}
+						else if (wgt->parent != 0)
+						{
+							wz_ask_parent_for_focus(wz_get_widget_dir(wgt, 3));
+						}
+						else
+							ret = 0;
+						break;
+					}
+					default:
 						ret = 0;
-					}
-					else if (event->keyboard.modifiers & 1)
-					{
-						wz_ask_parent_to_focus_prev(wgt);
-					}
-					else
-					{
-						wz_ask_parent_to_focus_next(wgt);
-					}
-					break;
 				}
-				case ALLEGRO_KEY_UP:
-				{
-					if (wgt->first_child != 0)
-					{
-						ret = 0;
-					}
-					else if (wgt->parent != 0)
-					{
-						wz_ask_parent_for_focus(wz_get_widget_dir(wgt, 0));
-					}
-					else
-						ret = 0;
-					break;
-				}
-				case ALLEGRO_KEY_RIGHT:
-				{
-					if (wgt->first_child != 0)
-					{
-						ret = 0;
-					}
-					else if (wgt->parent != 0)
-					{
-						wz_ask_parent_for_focus(wz_get_widget_dir(wgt, 1));
-					}
-					else
-						ret = 0;
-					break;
-				}
-				case ALLEGRO_KEY_DOWN:
-				{
-					if (wgt->first_child != 0)
-					{
-						ret = 0;
-					}
-					else if (wgt->parent != 0)
-					{
-						wz_ask_parent_for_focus(wz_get_widget_dir(wgt, 2));
-					}
-					else
-						ret = 0;
-					break;
-				}
-				case ALLEGRO_KEY_LEFT:
-				{
-					if (wgt->first_child != 0)
-					{
-						ret = 0;
-					}
-					else if (wgt->parent != 0)
-					{
-						wz_ask_parent_for_focus(wz_get_widget_dir(wgt, 3));
-					}
-					else
-						ret = 0;
-					break;
-				}
-				default:
-					ret = 0;
 			}
 			break;
 		}

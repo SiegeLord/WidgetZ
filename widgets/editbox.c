@@ -131,26 +131,13 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			{
 				ret = 0;
 			}
+			
+			int len = al_ustr_length(box->text);
+			
 			if((int)(event->keyboard.unichar) > 31 && (int)(event->keyboard.unichar) != 127)
 			{
-				int len = al_ustr_length(box->text);
 				al_ustr_insert_chr(box->text, al_ustr_offset(box->text, box->cursor_pos), event->keyboard.unichar);
 				box->cursor_pos++;
-			}
-			
-			break;
-		}
-		case ALLEGRO_EVENT_KEY_DOWN:
-		{
-			int len;
-			if(wgt->flags & WZ_STATE_DISABLED || !(wgt->flags & WZ_STATE_HAS_FOCUS))
-			{
-				ret = 0;
-				break;
-			}
-			else if(event->keyboard.modifiers & ALLEGRO_KEYMOD_CTRL || event->keyboard.modifiers & ALLEGRO_KEYMOD_ALT)
-			{
-				ret = 0;
 			}
 			else
 			{
@@ -158,7 +145,6 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				{
 					case ALLEGRO_KEY_BACKSPACE:
 					{
-						len = al_ustr_length(box->text);
 						if (len > 0 && box->cursor_pos > 0)
 						{
 							al_ustr_remove_chr(box->text, al_ustr_offset(box->text, box->cursor_pos - 1));
@@ -168,7 +154,6 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 					}
 					case ALLEGRO_KEY_DELETE:
 					{
-						len = al_ustr_length(box->text);
 						if (len > 0 && box->cursor_pos < len)
 						{
 							al_ustr_remove_chr(box->text, al_ustr_offset(box->text, box->cursor_pos));
@@ -187,7 +172,6 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 					}
 					case ALLEGRO_KEY_RIGHT:
 					{
-						len = al_ustr_length(box->text);
 						if (box->cursor_pos < len)
 						{
 							box->cursor_pos++;
@@ -216,7 +200,9 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 						ret = 0;
 				}
 			}
+			
 			wz_snap_editbox(box);
+			
 			break;
 		}
 		case WZ_SET_CURSOR_POS:
