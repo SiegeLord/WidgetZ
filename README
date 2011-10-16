@@ -43,7 +43,9 @@ cmake ..
 make
 make install
 
-Last command may need to be ran at root if you're on Linux
+Last command may need to be ran at root if you're on Linux.
+
+If you want the documentation, run build_docs.sh script. It will generate HTML documentation in the docs/ folder.
 
 4. License
 ==========
