@@ -52,6 +52,7 @@ If you want the documentation, run build_docs.sh script. It will generate HTML d
 
 WidgetZ is licensed using the ZLib license, reproduced here:
 
+"
 Copyright (c) 2011 Pavel Sountsov
 
 This software is provided 'as-is', without any express or implied
@@ -72,3 +73,9 @@ misrepresented as being the original software.
 
 3. This notice may not be removed or altered from any source
 distribution.
+"
+
+Also, the DejaVuSans.ttf font that comes with the example is licensed under the license found here:
+
+dejavu-fonts.org/wiki/index.php?title=License
+
