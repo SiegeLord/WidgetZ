@@ -6,7 +6,7 @@ include_directories(
 )
 
 file(GLOB_RECURSE SOURCES "src/*.c")
-set(EXAMPLE_DATA "arial.ttf")
+set(EXAMPLE_DATA "DejaVuSans.ttf")
 
 set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -g")
 

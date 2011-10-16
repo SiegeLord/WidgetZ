@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 	ALLEGRO_DISPLAY *display = al_create_display(1000, 600);
 	al_install_keyboard();
 	// Load a font
-	ALLEGRO_FONT *font = al_load_font("arial.ttf", 18, 0);
+	ALLEGRO_FONT *font = al_load_font("DejaVuSans.ttf", 18, 0);
 	
 	al_install_mouse();
 	
