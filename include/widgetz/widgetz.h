@@ -1,6 +1,11 @@
 #pragma once
+
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
+
+#ifdef __cplusplus
+   extern "C" {
+#endif
 
 /*
 Title: Misc
@@ -413,3 +418,7 @@ void wz_draw_single_text(float x, float y, float w, float h, int halign, int val
 
 int wz_widget_rect_test(WZ_WIDGET* wgt, float x, float y);
 int wz_widget_rect_test_all(WZ_WIDGET* wgt, float x, float y);
+
+#ifdef __cplusplus
+   }
+#endif
