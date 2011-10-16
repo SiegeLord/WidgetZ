@@ -1,0 +1,72 @@
+{{{{{{{{{{{{{{{{{{{{{{{{{
+\                       /
+/       WidgetZ         \
+\                       /
+/     by SiegeLord      \
+\                       /
+}}}}}}}}}}}}}}}}}}}}}}}}} 
+
+0. Contents
+===========
+
+1. About
+2. Requirements
+3. Installation
+4. License
+
+1. About
+========
+
+WidgetZ is a low-feature C GUI library for use with Allegro 5. It's features include:
+
+- Simple API
+- A variety of widgets (buttons, toggles, scroll bars, edit boxes, static text holders)
+- Simple layout support
+- Uses Allegro 5's event system
+- Basic theme support
+- Cross platform (tested on Linux and Windows)
+
+2. Requirements
+===============
+
+- Allegro 5 (image, font and primitives addons)
+- CMake
+- NaturalDocs (documentation only)
+
+3. Installation
+===============
+
+Standard CMake building instructions apply. Starting in the WidgetZ root directory do:
+
+mkdir build && cd build
+cmake ..
+make
+make install
+
+Last command may need to be ran at root if you're on Linux
+
+4. License
+==========
+
+WidgetZ is licensed using the ZLib license, reproduced here:
+
+Copyright (c) 2011 Pavel Sountsov
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the authors be held liable for any damages
+arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute it
+freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; you must not
+claim that you wrote the original software. If you use this software
+in a product, an acknowledgment in the product documentation would be
+appreciated but is not required.
+
+2. Altered source versions must be plainly marked as such, and must not be
+misrepresented as being the original software.
+
+3. This notice may not be removed or altered from any source
+distribution.
