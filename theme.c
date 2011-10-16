@@ -324,8 +324,7 @@ void wz_def_draw_scroll(struct WZ_THEME* theme, float x, float y, float w, float
 void wz_def_draw_editbox(struct WZ_THEME* theme, float x, float y, float w, float h, int cursor_pos, ALLEGRO_USTR* text, int style)
 {
 	WZ_DEF_THEME* thm = (WZ_DEF_THEME*)theme;
-	al_draw_filled_rectangle(x, y, x + w, y + h, wz_scale_color(thm->color1, 0.75));
-	int len = wz_get_text_pos(thm->font, text, w);
+	int len = wz_get_text_pos(thm->font, text, w - 4);
 	int cx,cy,cw,ch;
 	int len2 = al_ustr_length(text);
 	len = len + 1 > len2 ? len2 : len + 1;
