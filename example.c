@@ -6,7 +6,7 @@
 #include <allegro5/allegro_ttf.h>
 #include <stdio.h>
 #include <math.h>
-#include "widgetz.h"
+#include "widgetz/widgetz.h"
 
 int main(int argc, char *argv[])
 {

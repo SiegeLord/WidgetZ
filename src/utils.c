@@ -1,4 +1,4 @@
-#include "widgetz_internal.h"
+#include "widgetz/widgetz_internal.h"
 /*
 Title: Public
 

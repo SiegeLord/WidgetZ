@@ -1,5 +1,5 @@
 #pragma once
-#include "widgetz.h"
+#include "widgetz/widgetz.h"
 
 int wz_ask_parent_for_focus(WZ_WIDGET* wgt);//asks parent to focus the widget
 void wz_ask_parent_to_focus_next(WZ_WIDGET* wgt);//asks parent to focus the next widget after this one

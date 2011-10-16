@@ -1,5 +1,5 @@
-#include "widgetz_internal.h"
-#include "math.h"
+#include "widgetz/widgetz_internal.h"
+#include <math.h>
 
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>

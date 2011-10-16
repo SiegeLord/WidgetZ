@@ -1,5 +1,5 @@
-#include "widgetz_internal.h"
-#include "math.h"
+#include "widgetz/widgetz_internal.h"
+#include <math.h>
 
 /*
 Title: Internal

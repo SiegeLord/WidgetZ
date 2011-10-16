@@ -1,4 +1,4 @@
-#include "../widgetz_internal.h"
+#include "widgetz/widgetz_internal.h"
 
 void wz_snap_editbox(WZ_EDITBOX* box)
 {
