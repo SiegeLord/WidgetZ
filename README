@@ -43,7 +43,7 @@ cmake ..
 make
 make install
 
-Last command may need to be ran at root if you're on Linux.
+Last command may need to be ran at root if you're on Linux. This will build the library and install it into the standard location. It will also build the example, which you can run from the build directory.
 
 If you want the documentation, run build_docs.sh script. It will generate HTML documentation in the docs/ folder.
 
