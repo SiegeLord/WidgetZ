@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
 	bool done = false;
 	al_init();
 	al_init_font_addon();
+	al_init_primitives_addon();
 	al_init_ttf_addon();
 	display = al_create_display(1000, 600);
 	al_install_keyboard();
