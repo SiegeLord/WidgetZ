@@ -57,9 +57,10 @@ queue - Allegro event queue to use
 */
 void wz_register_sources(WZ_WIDGET* wgt, ALLEGRO_EVENT_QUEUE* queue)
 {
+	WZ_WIDGET* child;
 	al_register_event_source(queue, wgt->source);
 	
-	WZ_WIDGET* child = wgt->first_child;
+	child = wgt->first_child;
 	while (child)
 	{
 		wz_register_sources(child, queue);
@@ -82,9 +83,10 @@ See also:
 */
 void wz_set_theme(WZ_WIDGET* wgt, WZ_THEME* theme)
 {
+	WZ_WIDGET* child;
 	wgt->theme = theme;
 	
-	WZ_WIDGET* child = wgt->first_child;
+	child = wgt->first_child;
 	while (child)
 	{
 		wz_set_theme(child, theme);
@@ -365,8 +367,8 @@ Destroys the widget tree. Call it to free all of the memory used by the widget t
 */
 void wz_destroy(WZ_WIDGET* wgt)
 {
-	wz_detach(wgt);
 	ALLEGRO_EVENT event;
+	wz_detach(wgt);
 	wz_craft_event(&event, WZ_DESTROY, 0, 0);
 	
 	wz_broadcast_event(wgt, &event);

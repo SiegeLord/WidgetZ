@@ -206,9 +206,11 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 		case WZ_TRIGGER:
 		{
 			but->down = 0;
+			{
 			ALLEGRO_EVENT ev;
 			wz_craft_event(&ev, WZ_BUTTON_PRESSED, wgt, 0);
 			al_emit_user_event(wgt->source,	&ev, 0);
+			}
 			break;
 		}
 		default:

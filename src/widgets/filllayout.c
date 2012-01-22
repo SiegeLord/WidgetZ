@@ -113,6 +113,7 @@ int wz_fill_layout_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				child = child->next_sib;
 			}
 			
+			{
 			WZ_WIDGET* it = row_start;
 			float x = 0;
 			if (box->h_align == WZ_ALIGN_LEFT) x = box->h_spacing;
@@ -132,6 +133,7 @@ int wz_fill_layout_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 					}
 				}
 				it = it->next_sib;
+			}
 			}
 			total_height += max_height + box->v_spacing;
 			

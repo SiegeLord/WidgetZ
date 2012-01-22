@@ -56,9 +56,10 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				flags = WZ_STYLE_FOCUSED;
 			}
 			
+			{
 			float fraction = ((float)scl->cur_pos) / ((float)scl->max_pos);
 			wgt->theme->draw_scroll(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, fraction, flags);
-			
+			}
 			break;
 		}
 		case WZ_SET_SCROLL_POS:
@@ -87,9 +88,10 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 		case ALLEGRO_EVENT_MOUSE_AXES:
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 		{
+			int button_down;
 			ALLEGRO_MOUSE_STATE state;
 			al_get_mouse_state(&state);
-			int button_down = state.buttons;
+			button_down = state.buttons;
 			if (wgt->flags & WZ_STATE_DISABLED)
 			{
 				ret = 0;
@@ -188,9 +190,11 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			{
 				wz_ask_parent_for_focus(wgt);
 			}
+			{
 			ALLEGRO_EVENT ev;
 			wz_craft_event(&ev, WZ_SCROLL_POS_CHANGED, wgt, scl->cur_pos);
 			al_emit_user_event(wgt->source,	&ev, 0);
+			}
 			break;
 		}
 		default:
