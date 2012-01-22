@@ -15,7 +15,7 @@ include(FindPkgConfig)
 
 if(WIN32)
 	set(EXECUTABLE_TYPE "WIN32")
-	set(WZ_ALLEGRO_LDFLAGS -lallegro_ttf -lallegro_font -lallegro)
+	set(WZ_ALLEGRO_LDFLAGS -lallegro_ttf -lallegro_font -lallegro -lallegro_primitives)
 else(WIN32)
 	pkg_check_modules(WZ_ALLEGRO REQUIRED allegro_primitives-5.0 allegro_ttf-5.0)
 endif(WIN32)
