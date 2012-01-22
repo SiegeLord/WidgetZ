@@ -6,7 +6,7 @@ include_directories(
 )
 
 file(GLOB_RECURSE SOURCES "src/*.c")
-set(EXAMPLE_DATA "DejaVuSans.ttf")
+set(EXAMPLE_DATA "example/DejaVuSans.ttf")
 
 set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
@@ -32,7 +32,7 @@ endforeach(file)
 add_library(widgetz ${SOURCES})
 target_link_libraries(widgetz ${WZ_ALLEGRO_LDFLAGS})
 
-add_executable(example "example.c")
+add_executable(example "example/example.c")
 target_link_libraries(example widgetz ${WZ_ALLEGRO_LDFLAGS})
 
 install(DIRECTORY "${WIDGETZ_SOURCE_DIR}/include/widgetz" DESTINATION include)
