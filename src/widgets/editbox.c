@@ -31,7 +31,7 @@ void wz_snap_editbox(WZ_EDITBOX* box)
 	int size = al_ustr_size(box->text);
 	
 	int scroll_offset = al_ustr_offset(box->text, box->scroll_pos);
-	
+	int cursor_offset;
 	ALLEGRO_USTR_INFO info;
 	ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, scroll_offset, size);
 	
@@ -61,7 +61,7 @@ void wz_snap_editbox(WZ_EDITBOX* box)
 	}
 	
 	scroll_offset = al_ustr_offset(box->text, box->scroll_pos);
-	int cursor_offset = al_ustr_offset(box->text, box->cursor_pos);
+	cursor_offset = al_ustr_offset(box->text, box->cursor_pos);
 	
 	text = al_ref_ustr(&info, box->text, scroll_offset, cursor_offset);
 	if (al_get_ustr_width(font, text) > wgt->w)
@@ -145,6 +145,7 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 		}
 		case ALLEGRO_EVENT_KEY_CHAR:
 		{
+			int len;
 			if(wgt->flags & WZ_STATE_DISABLED || !(wgt->flags & WZ_STATE_HAS_FOCUS))
 			{
 				ret = 0;
@@ -155,7 +156,7 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				ret = 0;
 			}
 			
-			int len = al_ustr_length(box->text);
+			len = al_ustr_length(box->text);
 			
 			if((int)(event->keyboard.unichar) > 31 && (int)(event->keyboard.unichar) != 127)
 			{
