@@ -62,9 +62,11 @@ int wz_ask_parent_for_focus(WZ_WIDGET* wgt)
 		{
 			wz_ask_parent_for_focus(wgt->parent);
 		}
-		ALLEGRO_EVENT event;
-		wz_craft_event(&event, WZ_WANT_FOCUS, wgt, 0);
-		wz_send_event(wgt->parent, &event);
+		{
+			ALLEGRO_EVENT event;
+			wz_craft_event(&event, WZ_WANT_FOCUS, wgt, 0);
+			wz_send_event(wgt->parent, &event);
+		}
 	}
 	return 1;
 }
@@ -76,9 +78,10 @@ Asks the parent to focus the next child if possible
 */
 void wz_ask_parent_to_focus_next(WZ_WIDGET* wgt)
 {
+	WZ_WIDGET* child;
 	if (wgt->parent == 0)
 		return;
-	WZ_WIDGET* child = wgt->next_sib;
+	child = wgt->next_sib;
 	
 	while (child)
 	{
@@ -102,9 +105,10 @@ Asks the parent to focus the previous child if possible
 */
 void wz_ask_parent_to_focus_prev(WZ_WIDGET* wgt)
 {
+	WZ_WIDGET* child;
 	if (wgt->parent == 0)
 		return;
-	WZ_WIDGET* child = wgt->prev_sib;
+	child = wgt->prev_sib;
 	
 	while (child)
 	{

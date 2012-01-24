@@ -24,6 +24,7 @@ distribution.
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_primitives.h>
 #include <stdio.h>
 #include <math.h>
 #include "widgetz/widgetz.h"
@@ -31,31 +32,44 @@ distribution.
 int main(int argc, char *argv[])
 {
 	// Initialize Allegro 5 and the font routines
+	ALLEGRO_DISPLAY *display;
+	ALLEGRO_FONT *font;
+	ALLEGRO_EVENT_QUEUE *queue;
+	int refresh_rate;
+	double fixed_dt;
+	double old_time;
+	double game_time;
+	double start_time;
+	WZ_WIDGET* gui;
+	WZ_DEF_THEME theme;
+	WZ_WIDGET* wgt;
+	bool done = false;
 	al_init();
 	al_init_font_addon();
+	al_init_primitives_addon();
 	al_init_ttf_addon();
-	ALLEGRO_DISPLAY *display = al_create_display(1000, 600);
+	display = al_create_display(1000, 600);
 	al_install_keyboard();
 	// Load a font
-	ALLEGRO_FONT *font = al_load_font("DejaVuSans.ttf", 18, 0);
+	font = al_load_font("DejaVuSans.ttf", 18, 0);
 	
 	al_install_mouse();
 	
 	// Start the event queue to handle keyboard input and our timer
-	ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
+	queue = al_create_event_queue();
 	al_register_event_source(queue, al_get_keyboard_event_source());
 	al_register_event_source(queue, al_get_mouse_event_source());
-	
-	int refresh_rate = 60;
-	double fixed_dt = 1.0f / refresh_rate;
-	double old_time = al_current_time();
-	double game_time = al_current_time();
+
+	refresh_rate = 60;
+	fixed_dt = 1.0f / refresh_rate;
+	old_time = al_current_time();
+	game_time = al_current_time();
 	
 	/*
 	Define custom theme
 	wz_def_theme is a global vtable defined by the header
 	*/
-	WZ_DEF_THEME theme = wz_def_theme;
+	theme = wz_def_theme;
 	theme.font = font;
 	theme.color1 = al_map_rgba_f(0, 0.3, 0, 1);
 	theme.color2 = al_map_rgba_f(1, 1, 0, 1);
@@ -63,13 +77,12 @@ int main(int argc, char *argv[])
 	/*
 	Define root gui element
 	*/
-	WZ_WIDGET* gui = wz_create_widget(0, 0, 0, -1);
+	gui = wz_create_widget(0, 0, 0, -1);
 	wz_set_theme(gui, (WZ_THEME*)&theme);
 	
 	/*
 	Define all other gui elements, fill_layout is an automatic layout container
 	*/
-	WZ_WIDGET* wgt;
 	wz_create_fill_layout(gui, 50, 50, 300, 450, 50, 20, WZ_ALIGN_CENTRE, WZ_ALIGN_TOP, -1);
 	
 	wz_create_textbox(gui, 0, 0, 200, 50, WZ_ALIGN_CENTRE, WZ_ALIGN_CENTRE, al_ustr_new("Welcome to WidgetZ!"), 1, -1);
@@ -99,8 +112,7 @@ int main(int argc, char *argv[])
 	Register the gui with the event queue
 	*/
 	wz_register_sources(gui, queue);
-	
-	bool done = false;
+
 	while (!done)
 	{
 		double dt = al_current_time() - old_time;
@@ -113,17 +125,17 @@ int main(int argc, char *argv[])
 			game_time += fixed_dt * floor((old_time - game_time) / fixed_dt);
 		}
 		
-		double start_time = al_current_time();
+		start_time = al_current_time();
 		while (old_time - game_time >= 0)
 		{
+			ALLEGRO_EVENT event;
 			game_time += fixed_dt;
-			
+				
 			/*
 			Update gui
 			*/
 			wz_update(gui, fixed_dt);
 			
-			ALLEGRO_EVENT event;
 			while (al_get_next_event(queue, &event))
 			{
 				/*
@@ -153,7 +165,7 @@ int main(int argc, char *argv[])
 		}
 		
 		al_clear_to_color(al_map_rgba_f(0, 0, 0, 1));
-		
+
 		/*
 		Draw the gui
 		*/

@@ -104,12 +104,13 @@ int wz_widget_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				wz_focus(child, 0);
 				child = child->next_sib;
 			}
+			{
 			ALLEGRO_EVENT ev;
 			wz_craft_event(&ev, WZ_TAKE_FOCUS, wgt, 0);
 			
 			child = wgt->first_child;
 			wz_send_event((WZ_WIDGET*)event->user.data2, &ev);
-			
+			}
 			break;
 		}
 		case ALLEGRO_EVENT_MOUSE_AXES:

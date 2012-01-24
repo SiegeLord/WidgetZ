@@ -118,6 +118,10 @@ int wz_find_eol(ALLEGRO_USTR* text, ALLEGRO_FONT* font, float max_width, int sta
 	
 	while(1)
 	{
+		ALLEGRO_USTR_INFO info;
+		ALLEGRO_USTR* token;
+		float len;
+
 		/*
 		Find the end of current token
 		*/
@@ -131,10 +135,9 @@ int wz_find_eol(ALLEGRO_USTR* text, ALLEGRO_FONT* font, float max_width, int sta
 		/*
 		Check to see if the token fits
 		*/
-		ALLEGRO_USTR_INFO info;
-		ALLEGRO_USTR* token = al_ref_ustr(&info, text, start, b);
+		token = al_ref_ustr(&info, text, start, b);
 
-		float len = al_get_ustr_width(font, token);
+		len = al_get_ustr_width(font, token);
 		if (len < max_width || first)
 		{
 			if(last)
@@ -152,13 +155,14 @@ int wz_find_eol(ALLEGRO_USTR* text, ALLEGRO_FONT* font, float max_width, int sta
 		/*
 		Check what character we found
 		*/
+		{
 		int character = al_ustr_get(text, b);
 		if(character == '\n')
 		{
 			*end = b;
 			return b + 1;
 		}
-		
+		}
 		a = b + 1;
 		first = 0;
 	}
@@ -238,6 +242,7 @@ void wz_draw_multi_text(float x, float y, float w, float h, int halign, int vali
 		cur_y = y + (h - total_height) / 2;
 	}
 
+	{
 	int ret = 0;
 	do
 	{
@@ -245,13 +250,16 @@ void wz_draw_multi_text(float x, float y, float w, float h, int halign, int vali
 		int end;
 		ret = wz_find_eol(text, font, w, start, &end);
 		
+		{
 		ALLEGRO_USTR_INFO info;
 		ALLEGRO_USTR* token = al_ref_ustr(&info, text, start, end);
 		
 		wz_draw_single_text(x, cur_y, w, h, halign, WZ_ALIGN_TOP, color, font, token);
+		}
 		cur_y += text_height;
 	}
 	while (ret > 0);
+	}
 }
 
 void wz_def_draw_box(struct WZ_THEME* theme, float x, float y, float w, float h, int style)
@@ -350,15 +358,19 @@ void wz_def_draw_editbox(struct WZ_THEME* theme, float x, float y, float w, floa
 	int len = wz_get_text_pos(thm->font, text, w - 4);
 	int cx,cy,cw,ch;
 	int len2 = al_ustr_length(text);
+	int offset;
+	ALLEGRO_USTR_INFO info;
+	ALLEGRO_USTR* token;
+	ALLEGRO_COLOR border_col;
+	ALLEGRO_COLOR text_col;
 	len = len + 1 > len2 ? len2 : len + 1;
 	
-	int offset = al_ustr_offset(text, len);
+	offset = al_ustr_offset(text, len);
 	
-	ALLEGRO_USTR_INFO info;
-	ALLEGRO_USTR* token = al_ref_ustr(&info, text, 0, offset);
+	token = al_ref_ustr(&info, text, 0, offset);
 	
-	ALLEGRO_COLOR border_col = thm->color1;
-	ALLEGRO_COLOR text_col = thm->color2;
+	border_col = thm->color1;
+	text_col = thm->color2;
 	
 	if (style & WZ_STYLE_FOCUSED)
 	{
@@ -381,10 +393,12 @@ void wz_def_draw_editbox(struct WZ_THEME* theme, float x, float y, float w, floa
 	{
 		if (((int)(al_get_time() / 0.5f)) % 2 == 0)
 		{
+			float len;
+			float halfheight;
 			offset = al_ustr_offset(text, cursor_pos);
 			token = al_ref_ustr(&info, text, 0, offset);
-			float len = al_get_ustr_width(thm->font, token);
-			float halfheight = al_get_font_line_height(thm->font) / 2.0f;
+			len = al_get_ustr_width(thm->font, token);
+			halfheight = al_get_font_line_height(thm->font) / 2.0f;
 			al_draw_line(x + 2 + len, y + 2 + h / 2 - halfheight, x + 2 + len, y + 2 + h / 2 + halfheight, text_col, 1);
 		}
 	}
