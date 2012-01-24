@@ -24,6 +24,7 @@ distribution.
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_primitives.h>
 #include <stdio.h>
 #include <math.h>
 #include "widgetz/widgetz.h"
@@ -32,6 +33,7 @@ int main(int argc, char *argv[])
 {
 	// Initialize Allegro 5 and the font routines
 	al_init();
+	al_init_primitives_addon();
 	al_init_font_addon();
 	al_init_ttf_addon();
 	ALLEGRO_DISPLAY *display = al_create_display(1000, 600);
@@ -94,7 +96,7 @@ int main(int argc, char *argv[])
 					  " in it. Also supports new lines:\n\nNew paragraph.\n"
 					  "Also supports unicode:\n\n"
 					  "Привет"), 1, -1);
-	                  
+
 	/*
 	Register the gui with the event queue
 	*/
@@ -167,7 +169,17 @@ int main(int argc, char *argv[])
 	Destroy the gui
 	*/
 	wz_destroy(gui);
+
+	/*
+	Deinit Allegro 5
+	*/
+	al_destroy_font(font);
 	al_destroy_display(display);
+
+	al_shutdown_ttf_addon();
+	al_shutdown_font_addon();
+	al_shutdown_primitives_addon();
+	al_uninstall_system();
 	
 	return 0;
 }
