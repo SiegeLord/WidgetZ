@@ -18,12 +18,13 @@ A struct that defines a bunch of rendering functions to render various types of 
 */
 typedef struct WZ_THEME
 {
-	void (*draw_button)(struct WZ_THEME* theme, float x, float y, float w, float h, ALLEGRO_USTR* text, int style);
-	void (*draw_box)(struct WZ_THEME* theme, float x, float y, float w, float h, int style);
-	void (*draw_textbox)(struct WZ_THEME* theme, float x, float y, float w, float h, int halign, int valign, ALLEGRO_USTR* text, int style);
-	void (*draw_scroll)(struct WZ_THEME* theme, float x, float y, float w, float h, float fraction, int style);
-	void (*draw_editbox)(struct WZ_THEME* theme, float x, float y, float w, float h, int cursor_pos, ALLEGRO_USTR* text, int style);
-	void (*draw_image)(struct WZ_THEME* theme, float x, float y, float w, float h, ALLEGRO_BITMAP* image);
+	int pad;
+	const void (*draw_button)(struct WZ_THEME* theme, float x, float y, float w, float h, ALLEGRO_USTR* text, int style);
+	const void (*draw_box)(struct WZ_THEME* theme, float x, float y, float w, float h, int style);
+	const void (*draw_textbox)(struct WZ_THEME* theme, float x, float y, float w, float h, int halign, int valign, ALLEGRO_USTR* text, int style);
+	const void (*draw_scroll)(struct WZ_THEME* theme, float x, float y, float w, float h, float fraction, int style);
+	const void (*draw_editbox)(struct WZ_THEME* theme, float x, float y, float w, float h, int cursor_pos, ALLEGRO_USTR* text, int style);
+	const void (*draw_image)(struct WZ_THEME* theme, float x, float y, float w, float h, ALLEGRO_BITMAP* image);
 	ALLEGRO_FONT*(*get_font)(struct WZ_THEME* theme, int font_num);
 } WZ_THEME;
 
@@ -41,12 +42,6 @@ typedef struct WZ_DEF_THEME
 	WZ_THEME theme;
 	
 	/*
-	Variable: font
-	Font to use for this GUI
-	*/
-	ALLEGRO_FONT* font;
-	
-	/*
 	Variable: color1
 	The background color
 	*/
@@ -56,6 +51,14 @@ typedef struct WZ_DEF_THEME
 	The foreground color
 	*/
 	ALLEGRO_COLOR color2;
+
+	/*
+	Variable: font
+	Font to use for this GUI
+	*/
+	ALLEGRO_FONT* font;
+	int pad[3];
+
 } WZ_DEF_THEME;
 
 typedef struct WZ_SHORTCUT

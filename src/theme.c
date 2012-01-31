@@ -426,6 +426,7 @@ The default theme.
 const WZ_DEF_THEME wz_def_theme =
 {
 	{
+		0,
 		wz_def_draw_button,
 		wz_def_draw_box,
 		wz_def_draw_textbox,
