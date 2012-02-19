@@ -8,11 +8,9 @@ include_directories(
 file(GLOB_RECURSE SOURCES "src/*.c")
 if(NOT USE_INTERNAL_LIB)
 set(EXAMPLE_DATA "DejaVuSans.ttf")
-
 set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
 include(FindPkgConfig)
-
 set(ENV{FREETYPE_DIR} Deps)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMake/Modules")
 find_package(Allegro REQUIRED)
@@ -48,7 +46,6 @@ foreach(file ${EXAMPLE_DATA})
 	)
 endforeach(file)
 endif(NOT IPHONE)
-if(NOT USE_INTERNAL_LIB)
 add_library(widgetz ${SOURCES})
 target_link_libraries(widgetz ${WZ_ALLEGRO_LDFLAGS})
 if(IPHONE)
@@ -68,12 +65,11 @@ endforeach(file)
 else(IPHONE)
      add_executable(example "example/example.c")
 endif(IPHONE)
-endif(NOT USE_INTERNAL_LIB)
 
 target_link_libraries(example widgetz ${WZ_ALLEGRO_LDFLAGS})
-
 install(DIRECTORY "${WIDGETZ_SOURCE_DIR}/include/widgetz" DESTINATION include)
 install(TARGETS widgetz ARCHIVE DESTINATION lib)
 else(NOT USE_INTERNAL_LIB)
+add_library(widgetz ${SOURCES})
 target_link_libraries(widgetz ${ALLEGRO_LIBRARIES})
 endif(NOT USE_INTERNAL_LIB)
