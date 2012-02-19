@@ -13,12 +13,29 @@ set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
 include(FindPkgConfig)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMake/Modules")
+find_package(Allegro REQUIRED)
+include_directories(${ALLEGRO_INCLUDE_DIR})
+find_package(Freetype REQUIRED)
+set(WZ_ALLEGRO_LDFLAGS ${ALLEGRO_LIBRARIES} ${FREETYPE_LIBRARIES})
+
 if(WIN32)
 	set(EXECUTABLE_TYPE "WIN32")
-	set(WZ_ALLEGRO_LDFLAGS -lallegro_ttf -lallegro_font -lallegro -lallegro_primitives)
-else(WIN32)
-	pkg_check_modules(WZ_ALLEGRO REQUIRED allegro_primitives-5.0 allegro_ttf-5.0)
 endif(WIN32)
+
+if(APPLE)
+    set(WANT_X11 off)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
+    if(IPHONE)
+       set(WZ_ALLEGRO_LDFLAGS ${WZ_ALLEGRO_LDFLAGS}"-framework CoreGraphics -framework QuartzCore -framework UIKit -framework Foundation -framework CoreFoundation -framework OpenGLES -framework OpenAL -lm")
+       set(SDKROOT "iphoneos")
+       set(CMAKE_OSX_SYSROOT "${SDKROOT}")
+       add_definitions(-DIPHONE)
+    else(IPHONE)
+       set(WZ_ALLEGRO_LDFLAGS ${WZ_ALLEGRO_LDFLAGS} "-framework Cocoa -framework QuartzCore -framework Foundation -framework CoreFoundation -framework OpenGL -framework IOKit -framework AudioToolbox -framework OpenAL -lm")  
+       add_definitions(-DAPPLE)
+    endif(IPHONE)
+endif(APPLE)
 
 add_custom_target(example_data ALL DEPENDS ${EXAMPLE_DATA})
 

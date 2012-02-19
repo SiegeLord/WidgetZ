@@ -69,7 +69,8 @@ int main(int argc, char *argv[])
 	Define custom theme
 	wz_def_theme is a global vtable defined by the header
 	*/
-	theme = wz_def_theme;
+	memset(&theme, 0, sizeof(theme));
+	memcpy(&theme, &wz_def_theme, sizeof(theme));
 	theme.font = font;
 	theme.color1 = al_map_rgba_f(0, 0.3, 0, 1);
 	theme.color2 = al_map_rgba_f(1, 1, 0, 1);
