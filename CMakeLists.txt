@@ -13,6 +13,7 @@ set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
 include(FindPkgConfig)
 
+set(ENV{FREETYPE_DIR} Deps)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMake/Modules")
 find_package(Allegro REQUIRED)
 include_directories(${ALLEGRO_INCLUDE_DIR})
@@ -27,7 +28,7 @@ if(APPLE)
     set(WANT_X11 off)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
     if(IPHONE)
-       set(WZ_ALLEGRO_LDFLAGS ${WZ_ALLEGRO_LDFLAGS}"-framework CoreGraphics -framework QuartzCore -framework UIKit -framework Foundation -framework CoreFoundation -framework OpenGLES -framework OpenAL -lm")
+       set(WZ_ALLEGRO_LDFLAGS ${WZ_ALLEGRO_LDFLAGS} "-framework CoreGraphics -framework QuartzCore -framework UIKit -framework Foundation -framework CoreFoundation -framework OpenGLES -framework OpenAL -lm")
        set(SDKROOT "iphoneos")
        set(CMAKE_OSX_SYSROOT "${SDKROOT}")
        add_definitions(-DIPHONE)
@@ -39,18 +40,36 @@ endif(APPLE)
 
 add_custom_target(example_data ALL DEPENDS ${EXAMPLE_DATA})
 
+if(NOT IPHONE)
 foreach(file ${EXAMPLE_DATA})
 	add_custom_command(
 		OUTPUT ${file}
-		COMMAND "${CMAKE_COMMAND}" -E copy
-				"${CMAKE_CURRENT_SOURCE_DIR}/${file}" "${file}"
-		)
+		COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_CURRENT_SOURCE_DIR}/${file}" "${file}"
+	)
 endforeach(file)
-endif(NOT USE_INTERNAL_LIB)
+endif(NOT IPHONE)
 add_library(widgetz ${SOURCES})
 if(NOT USE_INTERNAL_LIB)
 target_link_libraries(widgetz ${WZ_ALLEGRO_LDFLAGS})
-add_executable(example "example/example.c")
+if(IPHONE)
+     add_executable(example MACOSX_BUNDLE "example/example.c")
+     set_target_properties(example PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.widgetz.example")
+     set_target_properties(example PROPERTIES XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer")
+     set(APP_RES_DIR \${TARGET_BUILD_DIR}/\${FULL_PRODUCT_NAME})
+foreach(file ${EXAMPLE_DATA})
+	add_custom_command(
+        TARGET example
+        POST_BUILD
+        COMMAND mkdir -p ${APP_RES_DIR} &&
+                /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -resolve-src-symlinks "${CMAKE_CURRENT_SOURCE_DIR}/${file}" ${APP_RES_DIR} &&
+                echo "Copied Data to Bundle."
+	)
+endforeach(file)
+else(IPHONE)
+     add_executable(example "example/example.c")
+endif(IPHONE)
+endif(NOT USE_INTERNAL_LIB)
+
 target_link_libraries(example widgetz ${WZ_ALLEGRO_LDFLAGS})
 
 install(DIRECTORY "${WIDGETZ_SOURCE_DIR}/include/widgetz" DESTINATION include)
