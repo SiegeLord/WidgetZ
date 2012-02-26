@@ -131,6 +131,26 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				ret = 0;
 			break;
 		}
+        case ALLEGRO_EVENT_TOUCH_BEGIN:
+        {
+            if (wgt->flags & WZ_STATE_DISABLED)
+			{
+				ret = 0;
+			}
+			else if (wz_widget_rect_test(wgt, event->touch.x, event->touch.y))
+			{
+				int len = al_ustr_length(box->text);
+				ALLEGRO_USTR_INFO info;
+				ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, box->scroll_pos, len - 1);
+                
+				ALLEGRO_FONT* font = wgt->theme->get_font(wgt->theme, 0);
+				wz_ask_parent_for_focus(wgt);
+				box->cursor_pos = wz_get_text_pos(font, text, event->touch.x - wgt->x) + box->scroll_pos;
+			}
+			else
+				ret = 0;
+			break;
+        }
 		case WZ_HANDLE_SHORTCUT:
 		{
 			wz_ask_parent_for_focus(wgt);
