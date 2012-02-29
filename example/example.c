@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
 	ALLEGRO_FONT *font;
 	ALLEGRO_EVENT_QUEUE *queue;
 	int refresh_rate;
-    float size=1.0;
-    int font_size=18;
+	float size=1.0;
+	int font_size=18;
 	double fixed_dt;
 	double old_time;
 	double game_time;
@@ -68,8 +68,8 @@ int main(int argc, char *argv[])
 	queue = al_create_event_queue();
 	al_register_event_source(queue, al_get_keyboard_event_source());
 	al_register_event_source(queue, al_get_mouse_event_source());
-    if (al_install_touch_input())
-        al_register_event_source(queue, al_get_touch_input_event_source());
+	if (al_install_touch_input())
+		al_register_event_source(queue, al_get_touch_input_event_source());
 
 	refresh_rate = 60;
 	fixed_dt = 1.0f / refresh_rate;
