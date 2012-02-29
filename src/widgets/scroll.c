@@ -138,6 +138,39 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				ret = 0;
 			break;
 		}
+        case ALLEGRO_EVENT_TOUCH_BEGIN:
+        {
+			int button_down = 1;
+			if (wgt->flags & WZ_STATE_DISABLED)
+			{
+				ret = 0;
+			}
+			else if(wz_widget_rect_test(wgt, event->touch.x, event->touch.y))
+			{
+				wz_ask_parent_for_focus(wgt);
+				if(button_down == 1)
+				{
+					float fraction;
+					int old_pos;
+					
+					if (vertical)
+						fraction = ((float)(event->touch.y - wgt->y)) / ((float)wgt->h);
+					else
+						fraction = ((float)(event->touch.x - wgt->x)) / ((float)wgt->w);
+                    
+					old_pos = scl->cur_pos;
+					scl->cur_pos = (int)(((float)scl->max_pos) * fraction + 0.5f);
+					if (old_pos != scl->cur_pos)
+					{
+						wz_trigger(wgt);
+					}
+				}
+			}
+			else
+				ret = 0;
+			break;
+            
+        }
 		case ALLEGRO_EVENT_KEY_CHAR:
 		{
 			int old_pos = scl->cur_pos;;
