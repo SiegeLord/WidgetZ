@@ -183,7 +183,8 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			break;
 		}
-        case ALLEGRO_EVENT_TOUCH_BEGIN:
+#if (ALLEGRO_SUB_VERSION > 0)
+		case ALLEGRO_EVENT_TOUCH_BEGIN:
 		{
 			if (wgt->flags & WZ_STATE_DISABLED)
 			{
@@ -202,6 +203,7 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			break;
 		}
+#endif
 		case WZ_DESTROY:
 		{
 			if(but->own)

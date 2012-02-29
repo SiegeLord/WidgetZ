@@ -68,8 +68,10 @@ int main(int argc, char *argv[])
 	queue = al_create_event_queue();
 	al_register_event_source(queue, al_get_keyboard_event_source());
 	al_register_event_source(queue, al_get_mouse_event_source());
+#if (ALLEGRO_SUB_VERSION > 0)
 	if (al_install_touch_input())
 		al_register_event_source(queue, al_get_touch_input_event_source());
+#endif
 
 	refresh_rate = 60;
 	fixed_dt = 1.0f / refresh_rate;

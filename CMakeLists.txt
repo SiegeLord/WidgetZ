@@ -10,6 +10,9 @@ if(NOT USE_INTERNAL_LIB)
 	set(EXAMPLE_DATA "DejaVuSans.ttf")
 	set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
+	set(ALLEGRO_SUFFIX "-5.1" CACHE STRING "Suffix to use for the allegro libraries (e.g. -5.1))
+	set(ALLEGRO_VERSION "-5.1.0" CACHE STRING "Allegro version to use (e.g. -5.0.5))
+
 	include(FindPkgConfig)
 	set(ENV{FREETYPE_DIR} Deps)
 	set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMake/Modules")

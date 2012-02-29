@@ -5,12 +5,10 @@
 # ALLEGRO_FOUND - True if found
 # ALLEGRO_DEFINITIONS - compiler switches used for Allegro
 
-set(ALLEGRO_NAMES allegro allegro_acodec allegro_audio allegro allegro_color allegro_font allegro_image allegro_memfile allegro_primitives allegro_ttf allegro_shader)
+set(ALLEGRO_NAMES allegro allegro_acodec allegro_audio allegro allegro_color allegro_font allegro_image allegro_memfile allegro_primitives allegro_ttf)
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	list(APPEND ALLEGRO_NAMES allegro_main)
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-set(ALLEGRO_SUFFIX "-5.1")
-set(ALLEGRO_VERSION "-5.1.0")
 set(ALLEGRO_WIN32_FLAVOR "-mt")
 
 # use pkg-config

@@ -131,6 +131,7 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				ret = 0;
 			break;
 		}
+#if (ALLEGRO_SUB_VERSION > 0)
 		case ALLEGRO_EVENT_TOUCH_BEGIN:
 		{
 			if (wgt->flags & WZ_STATE_DISABLED)
@@ -151,6 +152,7 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				ret = 0;
 			break;
 		}
+#endif
 		case WZ_HANDLE_SHORTCUT:
 		{
 			wz_ask_parent_for_focus(wgt);
