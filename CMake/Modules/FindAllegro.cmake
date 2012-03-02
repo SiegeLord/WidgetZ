@@ -14,8 +14,10 @@ set(ALLEGRO_VERSION "-5.1.0")
 set(ALLEGRO_WIN32_FLAVOR "-mt")
 
 # use pkg-config
+include(FindPkgConfig)
 find_package(PkgConfig)
-if(PkgConfig_FOUND)
+if(NOT APPLE)
+if(PKG_CONFIG_FOUND)
 foreach(ALLEGRO_SPECIFIC_LIB ${ALLEGRO_NAMES})
 	pkg_check_modules(PC_ALLEGRO_${ALLEGRO_SPECIFIC_LIB} REQUIRED ${ALLEGRO_SPECIFIC_LIB}${ALLEGRO_SUFFIX})
 	list(APPEND ALLEGRO_DEFINITIONS ${PC_ALLEGRO_${ALLEGRO_SPECIFIC_LIB}_CFLAGS_OTHER})
@@ -30,7 +32,8 @@ foreach(ALLEGRO_SPECIFIC_LIB ${ALLEGRO_NAMES})
 		list(APPEND PC_ALLEGRO_LIBRARY_DIRS ${PC_ALLEGRO_${ALLEGRO_SPECIFIC_LIB}_LIBRARY_DIRS})
 	endif(LIB_ALREADY_ADDED)
 endforeach(ALLEGRO_SPECIFIC_LIB)
-endif(PkgConfig_FOUND)
+endif(PKG_CONFIG_FOUND)
+endif(NOT APPLE)
 
 # use pkg-config returns as hints to find include directory
 find_path(ALLEGRO_INCLUDE_DIRS allegro5/allegro.h
