@@ -79,7 +79,7 @@ int wz_widget_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 		case WZ_DESTROY:
 		{
 			al_destroy_user_event_source(wgt->source);
-            free(wgt->source);
+			free(wgt->source);
 			free(wgt);
 			break;
 		}
@@ -136,8 +136,8 @@ int wz_widget_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			break;
 		}
-        /* Switch through elements on Touch:
-        case ALLEGRO_EVENT_TOUCH_BEGIN:
+		/* Switch through elements on Touch:
+		case ALLEGRO_EVENT_TOUCH_BEGIN:
 		{
 			if (wgt->flags & WZ_STATE_DISABLED)
 			{
@@ -145,7 +145,7 @@ int wz_widget_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			else if (wgt->first_child == 0 && wgt->parent != 0)
 			{
-                wz_ask_parent_to_focus_next(wgt);
+				wz_ask_parent_to_focus_next(wgt);
 			}
 			else
 			{
@@ -153,7 +153,7 @@ int wz_widget_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			break;
 		}
-        */
+		*/
 		case ALLEGRO_EVENT_KEY_CHAR:
 		{
 			if(event->keyboard.keycode == wgt->shortcut.keycode && ((event->keyboard.modifiers & wgt->shortcut.modifiers) || wgt->shortcut.modifiers == 0))

@@ -138,8 +138,9 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				ret = 0;
 			break;
 		}
-        case ALLEGRO_EVENT_TOUCH_BEGIN:
-        {
+#if (ALLEGRO_SUB_VERSION > 0)
+		case ALLEGRO_EVENT_TOUCH_BEGIN:
+		{
 			int button_down = 1;
 			if (wgt->flags & WZ_STATE_DISABLED)
 			{
@@ -169,8 +170,9 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			else
 				ret = 0;
 			break;
-            
-        }
+			
+		}
+#endif
 		case ALLEGRO_EVENT_KEY_CHAR:
 		{
 			int old_pos = scl->cur_pos;;

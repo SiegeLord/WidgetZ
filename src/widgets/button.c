@@ -183,7 +183,8 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			break;
 		}
-        case ALLEGRO_EVENT_TOUCH_BEGIN:
+#if (ALLEGRO_SUB_VERSION > 0)
+		case ALLEGRO_EVENT_TOUCH_BEGIN:
 		{
 			if (wgt->flags & WZ_STATE_DISABLED)
 			{
@@ -191,9 +192,9 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			else if ((event->touch.x != 0 || event->touch.y != 0) && wz_widget_rect_test(wgt, event->touch.x, event->touch.y))
 			{
-                but->down = 1;
+				but->down = 1;
 				wz_ask_parent_for_focus(wgt);
-                wz_trigger(wgt);
+				wz_trigger(wgt);
 			}
 			else
 			{
@@ -202,6 +203,7 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			break;
 		}
+#endif
 		case WZ_DESTROY:
 		{
 			if(but->own)

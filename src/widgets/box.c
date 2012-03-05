@@ -47,15 +47,17 @@ int wz_box_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			ret = 0;
 			break;
 		}
-        case ALLEGRO_EVENT_TOUCH_BEGIN:
-        {
+#if (ALLEGRO_SUB_VERSION > 0)
+		case ALLEGRO_EVENT_TOUCH_BEGIN:
+		{
 			if (wz_widget_rect_test(wgt, event->touch.x, event->touch.y))
 			{
 				wz_ask_parent_for_focus(wgt);
 			}
 			ret = 0;
 			break;            
-        }
+		}
+#endif
 		case WZ_DRAW:
 		{
 			if (wgt->flags & WZ_STATE_HIDDEN)

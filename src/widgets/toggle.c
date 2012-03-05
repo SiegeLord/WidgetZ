@@ -102,7 +102,8 @@ int wz_toggle_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			return wz_widget_proc(wgt, event);
 			break;
 		}
-        case ALLEGRO_EVENT_TOUCH_BEGIN:
+#if (ALLEGRO_SUB_VERSION > 0)
+		case ALLEGRO_EVENT_TOUCH_BEGIN:
 		{
 			if (wgt->flags & WZ_STATE_DISABLED)
 			{
@@ -110,12 +111,13 @@ int wz_toggle_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			if (wz_widget_rect_test(wgt, event->touch.x, event->touch.y))
 			{
-                wz_trigger(wgt);
+				wz_trigger(wgt);
 				wz_ask_parent_for_focus(wgt);
 			}
 			return wz_widget_proc(wgt, event);
 			break;
 		}
+#endif
 		case ALLEGRO_EVENT_KEY_UP:
 		case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
 		{

@@ -4,7 +4,7 @@
 #include <allegro5/allegro_font.h>
 
 #ifdef __cplusplus
-   extern "C" {
+	extern "C" {
 #endif
 
 /*
@@ -423,5 +423,5 @@ int wz_widget_rect_test(WZ_WIDGET* wgt, float x, float y);
 int wz_widget_rect_test_all(WZ_WIDGET* wgt, float x, float y);
 
 #ifdef __cplusplus
-   }
+	}
 #endif

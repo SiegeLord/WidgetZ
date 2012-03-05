@@ -5,12 +5,10 @@
 # ALLEGRO_FOUND - True if found
 # ALLEGRO_DEFINITIONS - compiler switches used for Allegro
 
-set(ALLEGRO_NAMES allegro allegro_acodec allegro_audio allegro allegro_color allegro_font allegro_image allegro_memfile allegro_primitives allegro_ttf allegro_shader)
+set(ALLEGRO_NAMES allegro allegro_acodec allegro_audio allegro allegro_color allegro_font allegro_image allegro_memfile allegro_primitives allegro_ttf)
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	list(APPEND ALLEGRO_NAMES allegro_main)
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-set(ALLEGRO_SUFFIX "-5.1")
-set(ALLEGRO_VERSION "-5.1.0")
 set(ALLEGRO_WIN32_FLAVOR "-mt")
 
 # use pkg-config
@@ -42,11 +40,11 @@ find_path(ALLEGRO_INCLUDE_DIRS allegro5/allegro.h
 
 # use pkg-config returns as hints to find lib directory
 foreach(ALLEGRO_SPECIFIC_LIB ${ALLEGRO_NAMES})
-   find_library(ALLEGRO_${ALLEGRO_SPECIFIC_LIB}_LIB
-				NAMES ${ALLEGRO_SPECIFIC_LIB} ${ALLEGRO_SPECIFIC_LIB}${ALLEGRO_SUFFIX} ${ALLEGRO_SPECIFIC_LIB}${ALLEGRO_VERSION} ${ALLEGRO_SPECIFIC_LIB}${ALLEGRO_VERSION}${ALLEGRO_WIN32_FLAVOR} ${ALLEGRO_SPECIFIC_LIB}-static
-				HINTS ${PC_ALLEGRO_LIBDIR} ${PC_ALLEGRO_LIBRARY_DIRS} "${PROJECT_SOURCE_DIR}/Deps/lib" "$ENV{ALLEGRO_HOME}/lib" "$ENV{EXTDEV}/lib" "$ENV{EXTDEV}/lib/MSVC" "$ENV{EXTDEV}/lib/MinGW" "$ENV{EXTDEV}/lib/BCC" "$ENV{EPREFIX}/lib" "$ENV{PREFIX}/lib" "/usr/lib" "/usr/local/lib"
-   )
-   list(APPEND ALLEGRO_LIBRARY ${ALLEGRO_${ALLEGRO_SPECIFIC_LIB}_LIB})
+	find_library(ALLEGRO_${ALLEGRO_SPECIFIC_LIB}_LIB
+		NAMES ${ALLEGRO_SPECIFIC_LIB} ${ALLEGRO_SPECIFIC_LIB}${ALLEGRO_SUFFIX} ${ALLEGRO_SPECIFIC_LIB}${ALLEGRO_VERSION} ${ALLEGRO_SPECIFIC_LIB}${ALLEGRO_VERSION}${ALLEGRO_WIN32_FLAVOR} ${ALLEGRO_SPECIFIC_LIB}-static
+		HINTS ${PC_ALLEGRO_LIBDIR} ${PC_ALLEGRO_LIBRARY_DIRS} "${PROJECT_SOURCE_DIR}/Deps/lib" "$ENV{ALLEGRO_HOME}/lib" "$ENV{EXTDEV}/lib" "$ENV{EXTDEV}/lib/MSVC" "$ENV{EXTDEV}/lib/MinGW" "$ENV{EXTDEV}/lib/BCC" "$ENV{EPREFIX}/lib" "$ENV{PREFIX}/lib" "/usr/lib" "/usr/local/lib"
+	)
+	list(APPEND ALLEGRO_LIBRARY ${ALLEGRO_${ALLEGRO_SPECIFIC_LIB}_LIB})
 endforeach(ALLEGRO_SPECIFIC_LIB)
 
 set(ALLEGRO_LIBRARIES "${ALLEGRO_LIBRARY}")

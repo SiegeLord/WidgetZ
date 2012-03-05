@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
 	ALLEGRO_FONT *font;
 	ALLEGRO_EVENT_QUEUE *queue;
 	int refresh_rate;
-    float size=1.0;
-    int font_size=18;
+	float size=1.0;
+	int font_size=18;
 	double fixed_dt;
 	double old_time;
 	double game_time;
@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
 	WZ_WIDGET* wgt;
 	bool done = false;
 	al_init();
+	al_init_primitives_addon();
 	al_init_font_addon();
 	al_init_primitives_addon();
 	al_init_ttf_addon();
@@ -67,8 +68,10 @@ int main(int argc, char *argv[])
 	queue = al_create_event_queue();
 	al_register_event_source(queue, al_get_keyboard_event_source());
 	al_register_event_source(queue, al_get_mouse_event_source());
-    if (al_install_touch_input())
-        al_register_event_source(queue, al_get_touch_input_event_source());
+#if (ALLEGRO_SUB_VERSION > 0)
+	if (al_install_touch_input())
+		al_register_event_source(queue, al_get_touch_input_event_source());
+#endif
 
 	refresh_rate = 60;
 	fixed_dt = 1.0f / refresh_rate;
@@ -118,7 +121,7 @@ int main(int argc, char *argv[])
 					  " in it. Also supports new lines:\n\nNew paragraph.\n"
 					  "Also supports unicode:\n\n"
 					  "Привет"), 1, -1);
-	                  
+
 	/*
 	Register the gui with the event queue
 	*/
@@ -190,7 +193,17 @@ int main(int argc, char *argv[])
 	Destroy the gui
 	*/
 	wz_destroy(gui);
+
+	/*
+	Deinit Allegro 5
+	*/
+	al_destroy_font(font);
 	al_destroy_display(display);
+
+	al_shutdown_ttf_addon();
+	al_shutdown_font_addon();
+	al_shutdown_primitives_addon();
+	al_uninstall_system();
 	
 	return 0;
 }
