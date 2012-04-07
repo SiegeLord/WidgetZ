@@ -32,6 +32,7 @@ if(NOT USE_INTERNAL_LIB)
 			set(WZ_ALLEGRO_LDFLAGS ${WZ_ALLEGRO_LDFLAGS} "-framework CoreGraphics -framework QuartzCore -framework UIKit -framework Foundation -framework CoreFoundation -framework OpenGLES -framework OpenAL -lm")
 			set(SDKROOT "iphoneos")
 			set(CMAKE_OSX_SYSROOT "${SDKROOT}")
+			set(CMAKE_XCODE_EFFECTIVE_PLATFORMS "-iphoneos;-iphonesimulator")
 			add_definitions(-DIPHONE)
 		else(IPHONE)
 			set(WZ_ALLEGRO_LDFLAGS ${WZ_ALLEGRO_LDFLAGS} "-framework Cocoa -framework QuartzCore -framework Foundation -framework CoreFoundation -framework OpenGL -framework IOKit -framework AudioToolbox -framework OpenAL -lm")  
@@ -61,7 +62,7 @@ if(NOT USE_INTERNAL_LIB)
 			TARGET example
 			POST_BUILD
 			COMMAND mkdir -p ${APP_RES_DIR} &&
-				/Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -resolve-src-symlinks "${CMAKE_CURRENT_SOURCE_DIR}/${file}" ${APP_RES_DIR} &&
+				ditto "${CMAKE_CURRENT_SOURCE_DIR}/${file}" ${APP_RES_DIR} &&
 				echo "Copied Data to Bundle."
 		)
 	endforeach(file)
