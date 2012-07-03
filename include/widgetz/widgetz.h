@@ -19,12 +19,12 @@ A struct that defines a bunch of rendering functions to render various types of 
 typedef struct WZ_THEME
 {
 	int pad;
-	void (*const draw_button)(struct WZ_THEME* theme, float x, float y, float w, float h, ALLEGRO_USTR* text, int style);
-	void (*const draw_box)(struct WZ_THEME* theme, float x, float y, float w, float h, int style);
-	void (*const draw_textbox)(struct WZ_THEME* theme, float x, float y, float w, float h, int halign, int valign, ALLEGRO_USTR* text, int style);
-	void (*const draw_scroll)(struct WZ_THEME* theme, float x, float y, float w, float h, float fraction, int style);
-	void (*const draw_editbox)(struct WZ_THEME* theme, float x, float y, float w, float h, int cursor_pos, ALLEGRO_USTR* text, int style);
-	void (*const draw_image)(struct WZ_THEME* theme, float x, float y, float w, float h, ALLEGRO_BITMAP* image);
+	void (*draw_button)(struct WZ_THEME* theme, float x, float y, float w, float h, ALLEGRO_USTR* text, int style);
+	void (*draw_box)(struct WZ_THEME* theme, float x, float y, float w, float h, int style);
+	void (*draw_textbox)(struct WZ_THEME* theme, float x, float y, float w, float h, int halign, int valign, ALLEGRO_USTR* text, int style);
+	void (*draw_scroll)(struct WZ_THEME* theme, float x, float y, float w, float h, float fraction, int style);
+	void (*draw_editbox)(struct WZ_THEME* theme, float x, float y, float w, float h, int cursor_pos, ALLEGRO_USTR* text, int style);
+	void (*draw_image)(struct WZ_THEME* theme, float x, float y, float w, float h, ALLEGRO_BITMAP* image);
 	ALLEGRO_FONT*(*get_font)(struct WZ_THEME* theme, int font_num);
 } WZ_THEME;
 
