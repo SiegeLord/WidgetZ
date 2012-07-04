@@ -38,7 +38,8 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 	int ret = 1;
 	WZ_BUTTON* but = (WZ_BUTTON*)wgt;
 	float x, y;
-	switch (event->type)
+
+	switch(event->type)
 	{
 		case WZ_LOSE_FOCUS:
 		{
@@ -47,24 +48,27 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 		}
 		case WZ_DRAW:
 		{
-			if (wgt->flags & WZ_STATE_HIDDEN)
+			if(wgt->flags & WZ_STATE_HIDDEN)
 			{
 				ret = 0;
 			}
-			else if (wgt->flags & WZ_STATE_DISABLED)
+			else if(wgt->flags & WZ_STATE_DISABLED)
 			{
 				wgt->theme->draw_button(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, but->text, WZ_STYLE_DISABLED);
 			}
 			else
 			{
 				int flags = 0;
-				if (but->down)
+
+				if(but->down)
 					flags |= WZ_STYLE_DOWN;
-				if (wgt->flags & WZ_STATE_HAS_FOCUS)
+
+				if(wgt->flags & WZ_STATE_HAS_FOCUS)
 					flags |= WZ_STYLE_FOCUSED;
-				
+
 				wgt->theme->draw_button(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, but->text, flags);
 			}
+
 			break;
 		}
 #if (ALLEGRO_SUB_VERSION > 0)
@@ -79,11 +83,12 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				x = event->mouse.x;
 				y = event->mouse.y;
 			}
-			if (wgt->flags & WZ_STATE_DISABLED)
+
+			if(wgt->flags & WZ_STATE_DISABLED)
 			{
 				ret = 0;
 			}
-			else if ((event->mouse.dx != 0 || event->mouse.dy != 0) && wz_widget_rect_test(wgt, x, y))
+			else if((event->mouse.dx != 0 || event->mouse.dy != 0) && wz_widget_rect_test(wgt, x, y))
 			{
 				wz_ask_parent_for_focus(wgt);
 			}
@@ -91,6 +96,7 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			{
 				ret = 0;
 			}
+
 			break;
 		}
 #if (ALLEGRO_SUB_VERSION > 0)
@@ -105,11 +111,12 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				x = event->mouse.x;
 				y = event->mouse.y;
 			}
-			if (wgt->flags & WZ_STATE_DISABLED)
+
+			if(wgt->flags & WZ_STATE_DISABLED)
 			{
 				ret = 0;
 			}
-			else if (event->mouse.button == 1 && wz_widget_rect_test(wgt, x, y))
+			else if(event->mouse.button == 1 && wz_widget_rect_test(wgt, x, y))
 			{
 				wz_ask_parent_for_focus(wgt);
 				but->down = 1;
@@ -117,68 +124,75 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			else
 				ret = 0;
+
 			break;
 		}
 		case ALLEGRO_EVENT_KEY_DOWN:
 		{
-			switch (event->keyboard.keycode)
+			switch(event->keyboard.keycode)
 			{
 				case ALLEGRO_KEY_ENTER:
 				{
-					if (wgt->flags & WZ_STATE_DISABLED)
+					if(wgt->flags & WZ_STATE_DISABLED)
 					{
 						ret = 0;
 					}
-					else if (wgt->flags & WZ_STATE_HAS_FOCUS)
+					else if(wgt->flags & WZ_STATE_HAS_FOCUS)
 					{
 						but->down = 1;
 					}
 					else
 						ret = 0;
+
 					break;
 				}
 				default:
 					ret = 0;
 			}
+
 			break;
 		}
 		case ALLEGRO_EVENT_KEY_UP:
 		{
-			switch (event->keyboard.keycode)
+			switch(event->keyboard.keycode)
 			{
 				case ALLEGRO_KEY_ENTER:
 				{
-					if (wgt->flags & WZ_STATE_DISABLED)
+					if(wgt->flags & WZ_STATE_DISABLED)
 					{
 						ret = 0;
 					}
-					else if (wgt->flags & WZ_STATE_HAS_FOCUS)
+					else if(wgt->flags & WZ_STATE_HAS_FOCUS)
 					{
 						wz_trigger(wgt);
 					}
 					else
 						ret = 0;
+
 					break;
 				}
 				default:
 					ret = 0;
 			}
+
 			break;
 		}
 		case WZ_HANDLE_SHORTCUT:
 		{
-			if (wgt->flags & WZ_STATE_DISABLED)
+			if(wgt->flags & WZ_STATE_DISABLED)
 			{
 				ret = 0;
 			}
 			else
 			{
-				if (!(wgt->flags & WZ_STATE_HAS_FOCUS))
+				if(!(wgt->flags & WZ_STATE_HAS_FOCUS))
 				{
 					wz_ask_parent_for_focus(wgt);
 				}
+
 				wz_trigger(wgt);
 			}
+
 			break;
 		}
 #if (ALLEGRO_SUB_VERSION > 0)
@@ -193,11 +207,12 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				x = event->mouse.x;
 				y = event->mouse.y;
 			}
-			if (wgt->flags & WZ_STATE_DISABLED)
+
+			if(wgt->flags & WZ_STATE_DISABLED)
 			{
 				ret = 0;
 			}
-			else if (but->down == 1 && event->mouse.button == 1)
+			else if(but->down == 1 && event->mouse.button == 1)
 			{
 				if(wz_widget_rect_test(wgt, x, y))
 				{
@@ -207,15 +222,18 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				{
 					ret = 0;
 				}
+
 				but->down = 0;
 				wgt->hold_focus = 0;
 			}
+
 			break;
 		}
 		case WZ_DESTROY:
 		{
 			if(but->own)
 				al_ustr_free(but->text);
+
 			ret = 0;
 			break;
 		}
@@ -230,23 +248,24 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			{
 				but->text = (ALLEGRO_USTR*)event->user.data3;
 			}
+
 			break;
 		}
 		case WZ_TRIGGER:
 		{
-			but->down = 0;
-			{
 			ALLEGRO_EVENT ev;
+			but->down = 0;
 			wz_craft_event(&ev, WZ_BUTTON_PRESSED, wgt, 0);
 			al_emit_user_event(wgt->source,	&ev, 0);
-			}
 			break;
 		}
 		default:
 			ret = 0;
 	}
-	if (ret == 0)
+
+	if(ret == 0)
 		ret = wz_widget_proc(wgt, event);
+
 	return ret;
 }
 

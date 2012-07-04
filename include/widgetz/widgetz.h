@@ -4,7 +4,7 @@
 #include <allegro5/allegro_font.h>
 
 #ifdef __cplusplus
-	extern "C" {
+extern "C" {
 #endif
 
 /*
@@ -25,7 +25,7 @@ typedef struct WZ_THEME
 	void (*draw_scroll)(struct WZ_THEME* theme, float x, float y, float w, float h, float fraction, int style);
 	void (*draw_editbox)(struct WZ_THEME* theme, float x, float y, float w, float h, int cursor_pos, ALLEGRO_USTR* text, int style);
 	void (*draw_image)(struct WZ_THEME* theme, float x, float y, float w, float h, ALLEGRO_BITMAP* image);
-	ALLEGRO_FONT*(*get_font)(struct WZ_THEME* theme, int font_num);
+	ALLEGRO_FONT* (*get_font)(struct WZ_THEME* theme, int font_num);
 } WZ_THEME;
 
 /*
@@ -40,7 +40,7 @@ Inherits From:
 typedef struct WZ_DEF_THEME
 {
 	WZ_THEME theme;
-	
+
 	/*
 	Variable: color1
 	The background color
@@ -87,10 +87,10 @@ typedef struct WZ_WIDGET
 	y coordinate of the widget
 	*/
 	float y;
-	
+
 	float local_x;
 	float local_y;
-	
+
 	/*
 	Variable: w
 	Width of the widget
@@ -101,21 +101,21 @@ typedef struct WZ_WIDGET
 	Height of the widget
 	*/
 	float h;
-	
+
 	struct WZ_WIDGET* prev_sib;
 	struct WZ_WIDGET* next_sib;
 	struct WZ_WIDGET* parent;
-	
+
 	struct WZ_WIDGET* last_child;
 	struct WZ_WIDGET* first_child;
-	
+
 	WZ_THEME* theme;
 	ALLEGRO_EVENT_SOURCE* source;
-	
+
 	WZ_SHORTCUT shortcut;
-	
+
 	int hold_focus;
-	
+
 	/*
 	Variable: flags
 	Flags of the widget. A combination of some sort of <Widget States>
@@ -126,7 +126,7 @@ typedef struct WZ_WIDGET
 	id of the widget
 	*/
 	int id;
-	
+
 	int (*proc)(struct WZ_WIDGET*, ALLEGRO_EVENT*);
 } WZ_WIDGET;
 
@@ -426,5 +426,5 @@ int wz_widget_rect_test(WZ_WIDGET* wgt, float x, float y);
 int wz_widget_rect_test_all(WZ_WIDGET* wgt, float x, float y);
 
 #ifdef __cplusplus
-	}
+}
 #endif

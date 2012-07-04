@@ -39,44 +39,48 @@ int wz_toggle_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 	WZ_BUTTON* but = (WZ_BUTTON*)wgt;
 	WZ_TOGGLE* tog = (WZ_TOGGLE*)wgt;
 	float x, y;
-	switch (event->type)
+
+	switch(event->type)
 	{
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 		{
-			if (wgt->flags & WZ_STATE_DISABLED)
+			if(wgt->flags & WZ_STATE_DISABLED)
 			{
 				ret = 0;
 			}
-			else if (event->mouse.button == 1 && wz_widget_rect_test(wgt, event->mouse.x, event->mouse.y))
+			else if(event->mouse.button == 1 && wz_widget_rect_test(wgt, event->mouse.x, event->mouse.y))
 			{
 				wz_ask_parent_for_focus(wgt);
 				wz_trigger(wgt);
 			}
 			else
 				ret = 0;
+
 			break;
 		}
 		case ALLEGRO_EVENT_KEY_DOWN:
 		{
-			switch (event->keyboard.keycode)
+			switch(event->keyboard.keycode)
 			{
 				case ALLEGRO_KEY_ENTER:
 				{
-					if (wgt->flags & WZ_STATE_DISABLED)
+					if(wgt->flags & WZ_STATE_DISABLED)
 					{
 						ret = 0;
 					}
-					else if (wgt->flags & WZ_STATE_HAS_FOCUS)
+					else if(wgt->flags & WZ_STATE_HAS_FOCUS)
 					{
 						wz_trigger(wgt);
 					}
 					else
 						ret = 0;
+
 					break;
 				}
 				default:
-				ret = 0;
+					ret = 0;
 			}
+
 			break;
 		}
 		case WZ_LOSE_FOCUS:
@@ -92,23 +96,25 @@ int wz_toggle_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 		}
 		case WZ_TOGGLE_GROUP:
 		{
-			if (event->user.data3 == tog->group)
+			if(event->user.data3 == tog->group)
 			{
 				but->down = 0;
 			}
+
 			break;
 		}
 		case WZ_TRIGGER:
 		{
 			ALLEGRO_EVENT ev;
-			if (tog->group == -1)
+
+			if(tog->group == -1)
 			{
 				/*
 				A simple toggle button
 				*/
 				but->down = !but->down;
 			}
-			else if (wgt->parent)
+			else if(wgt->parent)
 			{
 				/*
 				Disable the group, and then enable self
@@ -117,6 +123,7 @@ int wz_toggle_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				wz_broadcast_event(wgt->parent, &ev);
 				but->down = 1;
 			}
+
 			wz_craft_event(&ev, WZ_BUTTON_PRESSED, wgt, 0);
 			al_emit_user_event(wgt->source,	&ev, 0);
 			break;
@@ -124,8 +131,10 @@ int wz_toggle_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 		default:
 			ret = 0;
 	}
-	if (ret == 0)
+
+	if(ret == 0)
 		ret = wz_button_proc(wgt, event);
+
 	return ret;
 }
 

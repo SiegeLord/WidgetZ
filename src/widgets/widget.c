@@ -40,7 +40,8 @@ Returns:
 int wz_widget_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 {
 	int ret = 1;
-	switch (event->type)
+
+	switch(event->type)
 	{
 		case WZ_HIDE:
 		{
@@ -64,7 +65,7 @@ int wz_widget_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 		}
 		case WZ_UPDATE_POSITION:
 		{
-			if (wgt->parent)
+			if(wgt->parent)
 			{
 				wgt->local_x = wgt->parent->local_x + wgt->x;
 				wgt->local_y = wgt->parent->local_y + wgt->y;
@@ -74,6 +75,7 @@ int wz_widget_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				wgt->local_x = wgt->x;
 				wgt->local_y = wgt->y;
 			}
+
 			break;
 		}
 		case WZ_DESTROY:
@@ -92,8 +94,10 @@ int wz_widget_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 		{
 			wz_focus(wgt, 0);
 			wgt->flags |= WZ_STATE_HAS_FOCUS;
-			if (wgt->first_child)
+
+			if(wgt->first_child)
 				wz_focus(wgt->first_child, 1);
+
 			break;
 		}
 		case WZ_WANT_FOCUS:
@@ -101,21 +105,25 @@ int wz_widget_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			WZ_WIDGET* child = wgt->first_child;
 			ALLEGRO_EVENT ev;
 			int all_unfocused = 1;
-			while (child)
+
+			while(child)
 			{
 				if(child->hold_focus)
 				{
 					all_unfocused = 0;
 					break;
 				}
+
 				wz_focus(child, 0);
 				child = child->next_sib;
 			}
+
 			if(all_unfocused)
 			{
 				wz_craft_event(&ev, WZ_TAKE_FOCUS, wgt, 0);
 				wz_send_event((WZ_WIDGET*)event->user.data2, &ev);
 			}
+
 			break;
 		}
 		/* Switch through elements on Touch:
@@ -146,15 +154,15 @@ int wz_widget_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			else
 			{
-				switch (event->keyboard.keycode)
+				switch(event->keyboard.keycode)
 				{
 					case ALLEGRO_KEY_TAB:
 					{
-						if (wgt->first_child != 0)
+						if(wgt->first_child != 0)
 						{
 							ret = 0;
 						}
-						else if (event->keyboard.modifiers & 1)
+						else if(event->keyboard.modifiers & 1)
 						{
 							wz_ask_parent_to_focus_prev(wgt);
 						}
@@ -162,73 +170,80 @@ int wz_widget_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 						{
 							wz_ask_parent_to_focus_next(wgt);
 						}
+
 						break;
 					}
 					case ALLEGRO_KEY_UP:
 					{
-						if (wgt->first_child != 0)
+						if(wgt->first_child != 0)
 						{
 							ret = 0;
 						}
-						else if (wgt->parent != 0)
+						else if(wgt->parent != 0)
 						{
 							wz_ask_parent_for_focus(wz_get_widget_dir(wgt, 0));
 						}
 						else
 							ret = 0;
+
 						break;
 					}
 					case ALLEGRO_KEY_RIGHT:
 					{
-						if (wgt->first_child != 0)
+						if(wgt->first_child != 0)
 						{
 							ret = 0;
 						}
-						else if (wgt->parent != 0)
+						else if(wgt->parent != 0)
 						{
 							wz_ask_parent_for_focus(wz_get_widget_dir(wgt, 1));
 						}
 						else
 							ret = 0;
+
 						break;
 					}
 					case ALLEGRO_KEY_DOWN:
 					{
-						if (wgt->first_child != 0)
+						if(wgt->first_child != 0)
 						{
 							ret = 0;
 						}
-						else if (wgt->parent != 0)
+						else if(wgt->parent != 0)
 						{
 							wz_ask_parent_for_focus(wz_get_widget_dir(wgt, 2));
 						}
 						else
 							ret = 0;
+
 						break;
 					}
 					case ALLEGRO_KEY_LEFT:
 					{
-						if (wgt->first_child != 0)
+						if(wgt->first_child != 0)
 						{
 							ret = 0;
 						}
-						else if (wgt->parent != 0)
+						else if(wgt->parent != 0)
 						{
 							wz_ask_parent_for_focus(wz_get_widget_dir(wgt, 3));
 						}
 						else
 							ret = 0;
+
 						break;
 					}
 					default:
 						ret = 0;
 				}
 			}
+
 			break;
 		}
 		default:
 			ret = 0;
 	}
+
 	return ret;
 }
 
@@ -246,7 +261,6 @@ void wz_init_widget(WZ_WIDGET* wgt, WZ_WIDGET* parent, float x, float y, float w
 	wgt->flags = 1;
 	wgt->theme = (WZ_THEME*) & wz_def_theme;
 	wgt->proc = wz_widget_proc;
-	
 	wgt->parent = 0;
 	wgt->last_child = 0;
 	wgt->first_child = 0;
@@ -254,11 +268,12 @@ void wz_init_widget(WZ_WIDGET* wgt, WZ_WIDGET* parent, float x, float y, float w
 	wgt->prev_sib = 0;
 	wgt->id = id;
 	wgt->hold_focus = 0;
-	if (wgt->id == -1)
+
+	if(wgt->id == -1)
 	{
-		if (parent == 0)
+		if(parent == 0)
 			wgt->id = 0;
-		else if (parent->last_child != 0)
+		else if(parent->last_child != 0)
 		{
 			wgt->id = parent->last_child->id + 1;
 		}
@@ -267,11 +282,11 @@ void wz_init_widget(WZ_WIDGET* wgt, WZ_WIDGET* parent, float x, float y, float w
 			wgt->id = parent->id + 1;
 		}
 	}
+
 	wgt->source = malloc(sizeof(ALLEGRO_EVENT_SOURCE));
 	al_init_user_event_source(wgt->source);
 	wgt->shortcut.modifiers = 0;
 	wgt->shortcut.keycode = -1;
-	
 	wz_attach(wgt, parent);
 	wz_ask_parent_for_focus(wgt);
 }

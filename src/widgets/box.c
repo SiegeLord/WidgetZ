@@ -36,31 +36,34 @@ See also:
 int wz_box_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 {
 	int ret = 1;
-	switch (event->type)
+
+	switch(event->type)
 	{
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 		{
-			if (event->mouse.button == 1 && wz_widget_rect_test(wgt, event->mouse.x, event->mouse.y))
+			if(event->mouse.button == 1 && wz_widget_rect_test(wgt, event->mouse.x, event->mouse.y))
 			{
 				wz_ask_parent_for_focus(wgt);
 			}
+
 			ret = 0;
 			break;
 		}
 #if (ALLEGRO_SUB_VERSION > 0)
 		case ALLEGRO_EVENT_TOUCH_BEGIN:
 		{
-			if (wz_widget_rect_test(wgt, event->touch.x, event->touch.y))
+			if(wz_widget_rect_test(wgt, event->touch.x, event->touch.y))
 			{
 				wz_ask_parent_for_focus(wgt);
 			}
+
 			ret = 0;
-			break;            
+			break;
 		}
 #endif
 		case WZ_DRAW:
 		{
-			if (wgt->flags & WZ_STATE_HIDDEN)
+			if(wgt->flags & WZ_STATE_HIDDEN)
 			{
 				ret = 0;
 			}
@@ -73,8 +76,10 @@ int wz_box_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 		default:
 			ret = 0;
 	}
-	if (ret == 0)
+
+	if(ret == 0)
 		ret = wz_widget_proc(wgt, event);
+
 	return ret;
 }
 

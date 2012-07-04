@@ -59,9 +59,9 @@ void wz_register_sources(WZ_WIDGET* wgt, ALLEGRO_EVENT_QUEUE* queue)
 {
 	WZ_WIDGET* child;
 	al_register_event_source(queue, wgt->source);
-	
 	child = wgt->first_child;
-	while (child)
+
+	while(child)
 	{
 		wz_register_sources(child, queue);
 		child = child->next_sib;
@@ -85,9 +85,9 @@ void wz_set_theme(WZ_WIDGET* wgt, WZ_THEME* theme)
 {
 	WZ_WIDGET* child;
 	wgt->theme = theme;
-	
 	child = wgt->first_child;
-	while (child)
+
+	while(child)
 	{
 		wz_set_theme(child, theme);
 		child = child->next_sib;
@@ -101,12 +101,12 @@ Detaches a widget tree from its parent
 */
 void wz_detach(WZ_WIDGET* wgt)
 {
-	if (wgt->parent == 0)
+	if(wgt->parent == 0)
 		return;
-		
-	if (wgt->next_sib != 0)
+
+	if(wgt->next_sib != 0)
 	{
-		if (wgt->prev_sib != 0)
+		if(wgt->prev_sib != 0)
 		{
 			wgt->prev_sib->next_sib = wgt->next_sib;
 			wgt->next_sib->prev_sib = wgt->prev_sib;
@@ -117,9 +117,9 @@ void wz_detach(WZ_WIDGET* wgt)
 			wgt->parent->first_child = wgt->next_sib;
 		}
 	}
-	else if (wgt->prev_sib != 0)
+	else if(wgt->prev_sib != 0)
 	{
-		if (wgt->next_sib != 0)
+		if(wgt->next_sib != 0)
 		{
 			wgt->next_sib->prev_sib = wgt->prev_sib;
 			wgt->prev_sib->next_sib = wgt->next_sib;
@@ -135,7 +135,7 @@ void wz_detach(WZ_WIDGET* wgt)
 		wgt->parent->first_child = 0;
 		wgt->parent->last_child = 0;
 	}
-	
+
 	wgt->parent = 0;
 	wgt->next_sib = 0;
 	wgt->prev_sib = 0;
@@ -148,20 +148,21 @@ Attaches a widget tree to its parent
 */
 void wz_attach(WZ_WIDGET* wgt, WZ_WIDGET* parent)
 {
-	if (parent == 0)
+	if(parent == 0)
 		return;
+
 	wz_detach(wgt);
-	
 	wgt->parent = parent;
-	
-	if (parent->last_child != 0)
+
+	if(parent->last_child != 0)
 	{
 		parent->last_child->next_sib = wgt;
 		wgt->prev_sib = parent->last_child;
 	}
-	if (parent->first_child == 0)
+
+	if(parent->first_child == 0)
 		parent->first_child = wgt;
-		
+
 	parent->last_child = wgt;
 	wz_set_theme(wgt, parent->theme);
 }
@@ -177,11 +178,12 @@ sib - Widget after which this widget will be attached. It's parent is used as th
 */
 void wz_attach_after(WZ_WIDGET* wgt, WZ_WIDGET* sib)
 {
-	if (sib->parent == 0)
+	if(sib->parent == 0)
 		return;
+
 	wz_detach(wgt);
-	
-	if (sib->next_sib)
+
+	if(sib->next_sib)
 	{
 		sib->next_sib->prev_sib = wgt;
 	}
@@ -189,7 +191,7 @@ void wz_attach_after(WZ_WIDGET* wgt, WZ_WIDGET* sib)
 	{
 		sib->parent->last_child = wgt;
 	}
-	
+
 	wgt->next_sib = sib->next_sib;
 	sib->next_sib = wgt;
 	wgt->prev_sib = sib;
@@ -207,11 +209,12 @@ sib - Widget before which this widget will be attached. It's parent is used as t
 */
 void wz_attach_before(WZ_WIDGET* wgt, WZ_WIDGET* sib)
 {
-	if (sib->parent == 0)
+	if(sib->parent == 0)
 		return;
+
 	wz_detach(wgt);
-	
-	if (sib->prev_sib)
+
+	if(sib->prev_sib)
 	{
 		sib->prev_sib->next_sib = wgt;
 	}
@@ -219,7 +222,7 @@ void wz_attach_before(WZ_WIDGET* wgt, WZ_WIDGET* sib)
 	{
 		sib->parent->first_child = wgt;
 	}
-	
+
 	wgt->prev_sib = sib->prev_sib;
 	sib->prev_sib = wgt;
 	wgt->next_sib = sib;
@@ -239,27 +242,31 @@ Returns:
 int wz_send_event(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 {
 	WZ_WIDGET* child = wgt->first_child;
+
 	if(wgt->proc(wgt, event))
 		return 1;
-		
+
 	while(child)
 	{
-		if ((child->flags & WZ_STATE_HAS_FOCUS) && wz_send_event(child, event))
+		if((child->flags & WZ_STATE_HAS_FOCUS) && wz_send_event(child, event))
 			return 1;
+
 		child = child->next_sib;
 	}
-	
+
 	/*
 	See if the unfocused ones would like some too
 	*/
 	child = wgt->first_child;
+
 	while(child)
 	{
-		if (wz_send_event(child, event))
+		if(wz_send_event(child, event))
 			return 1;
+
 		child = child->next_sib;
 	}
-	
+
 	return 0;
 }
 
@@ -276,13 +283,14 @@ int wz_broadcast_event(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 	int ret = 0;
 	WZ_WIDGET* child = wgt->first_child;
 	ret |= wgt->proc(wgt, event);
-	
-	while (child)
+
+	while(child)
 	{
 		WZ_WIDGET* next = child->next_sib;
 		ret |= wz_broadcast_event(child, event);
 		child = next;
 	}
+
 	return ret;
 }
 
@@ -297,10 +305,9 @@ dt - Time that has passed since the last update
 */
 void wz_update(WZ_WIDGET* wgt, double dt)
 {
-	ALLEGRO_EVENT event;	
+	ALLEGRO_EVENT event;
 	wz_craft_event(&event, WZ_UPDATE, 0, 0);
 	wz_broadcast_event(wgt, &event);
-	
 	wz_craft_event(&event, WZ_UPDATE_POSITION, 0, 0);
 	wz_broadcast_event(wgt, &event);
 }
@@ -356,7 +363,6 @@ void wz_show(WZ_WIDGET* wgt, int show)
 {
 	ALLEGRO_EVENT event;
 	wz_craft_event(&event, show ? WZ_SHOW : WZ_HIDE, 0, 0);
-	
 	wz_broadcast_event(wgt, &event);
 }
 
@@ -370,7 +376,6 @@ void wz_destroy(WZ_WIDGET* wgt)
 	ALLEGRO_EVENT event;
 	wz_detach(wgt);
 	wz_craft_event(&event, WZ_DESTROY, 0, 0);
-	
 	wz_broadcast_event(wgt, &event);
 }
 
@@ -386,7 +391,6 @@ void wz_enable(WZ_WIDGET* wgt, int enable)
 {
 	ALLEGRO_EVENT event;
 	wz_craft_event(&event, enable ? WZ_ENABLE : WZ_DISABLE, 0, 0);
-	
 	wz_broadcast_event(wgt, &event);
 }
 
@@ -400,7 +404,7 @@ focus - pass 1 to focus the widget tree, or 0 to defocus it
 */
 void wz_focus(WZ_WIDGET* wgt, int focus)
 {
-	if (focus)
+	if(focus)
 	{
 		wz_ask_parent_for_focus(wgt);
 	}
@@ -473,16 +477,19 @@ ALLEGRO_COLOR wz_scale_color(ALLEGRO_COLOR c, float scale)
 	ret.r = c.r * scale;
 	ret.g = c.g * scale;
 	ret.b = c.b * scale;
-	
+
 	if(ret.r > 1)
 		ret.r = 1;
+
 	if(ret.g > 1)
 		ret.g = 1;
+
 	if(ret.b > 1)
 		ret.b = 1;
+
 	if(ret.a > 1)
 		ret.a = 1;
-	
+
 	return ret;
 }
 
@@ -515,16 +522,20 @@ int wz_widget_rect_test_all(WZ_WIDGET* wgt, float x, float y)
 	if(wgt->flags & WZ_STATE_HIDDEN)
 		return 0;
 
-    if(wz_widget_rect_test(wgt, x, y))
+	if(wz_widget_rect_test(wgt, x, y))
 		return 1;
 
 	child = wgt->first_child;
+
 	while(child)
 	{
 		int ret = wz_widget_rect_test_all(child, x, y);
+
 		if(ret)
 			return 1;
+
 		child = child->next_sib;
 	}
+
 	return 0;
 }

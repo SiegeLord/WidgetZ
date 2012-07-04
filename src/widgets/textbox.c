@@ -37,11 +37,12 @@ int wz_textbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 {
 	int ret = 1;
 	WZ_TEXTBOX* box = (WZ_TEXTBOX*)wgt;
-	switch (event->type)
+
+	switch(event->type)
 	{
 		case WZ_DRAW:
 		{
-			if (wgt->flags & WZ_STATE_HIDDEN)
+			if(wgt->flags & WZ_STATE_HIDDEN)
 			{
 				ret = 0;
 			}
@@ -50,12 +51,14 @@ int wz_textbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				int flags = (wgt->flags & WZ_STATE_DISABLED) ? WZ_STYLE_DISABLED : 0;
 				wgt->theme->draw_textbox(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, box->h_align, box->v_align, box->text, flags);
 			}
+
 			break;
 		}
 		case WZ_DESTROY:
 		{
 			if(box->own)
 				al_ustr_free(box->text);
+
 			ret = 0;
 			break;
 		}
@@ -70,13 +73,16 @@ int wz_textbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			{
 				box->text = (ALLEGRO_USTR*)event->user.data3;
 			}
+
 			break;
 		}
 		default:
 			ret = 0;
 	}
-	if (ret == 0)
+
+	if(ret == 0)
 		ret = wz_widget_proc(wgt, event);
+
 	return ret;
 }
 
@@ -89,7 +95,7 @@ void wz_init_textbox(WZ_TEXTBOX* box, WZ_WIDGET* parent, float x, float y, float
 	wz_init_widget(wgt, parent, x, y, w, h, id);
 	wgt->flags |= WZ_STATE_NOTWANT_FOCUS;
 	wgt->proc = wz_textbox_proc;
-	box->own= own;
+	box->own = own;
 	box->h_align = halign;
 	box->v_align = valign;
 	box->text = text;

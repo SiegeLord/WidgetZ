@@ -2,7 +2,7 @@
 #include "widgetz/widgetz.h"
 
 #ifdef __cplusplus
-   extern "C" {
+extern "C" {
 #endif
 
 int wz_ask_parent_for_focus(WZ_WIDGET* wgt);//asks parent to focus the widget
@@ -39,5 +39,5 @@ void wz_init_layout_stop(WZ_WIDGET* box, WZ_WIDGET* parent, int id);
 void wz_init_image_button(WZ_IMAGE_BUTTON* but, WZ_WIDGET* parent, float x, float y, float w, float h, ALLEGRO_BITMAP* normal, ALLEGRO_BITMAP* down, ALLEGRO_BITMAP* focused, ALLEGRO_BITMAP* disabled, int id);
 
 #ifdef __cplusplus
-   }
+}
 #endif

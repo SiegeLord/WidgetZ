@@ -29,42 +29,42 @@ void wz_snap_editbox(WZ_EDITBOX* box)
 	ALLEGRO_FONT* font = wgt->theme->get_font(wgt->theme, 0);
 	int len = al_ustr_length(box->text);
 	int size = al_ustr_size(box->text);
-	
 	int scroll_offset = al_ustr_offset(box->text, box->scroll_pos);
 	int cursor_offset;
 	ALLEGRO_USTR_INFO info;
 	ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, scroll_offset, size);
-	
 	int max_rel_cursor_pos = wz_get_text_pos(font, text, wgt->w);
-	
-	if (box->cursor_pos < box->scroll_pos)
+
+	if(box->cursor_pos < box->scroll_pos)
 	{
 		box->scroll_pos = box->cursor_pos;
 	}
-	if (box->cursor_pos > box->scroll_pos + max_rel_cursor_pos)
+
+	if(box->cursor_pos > box->scroll_pos + max_rel_cursor_pos)
 	{
 		box->scroll_pos = box->cursor_pos - max_rel_cursor_pos;
 	}
-	
-	if (box->cursor_pos > 0 && box->cursor_pos - box->scroll_pos < 1)
+
+	if(box->cursor_pos > 0 && box->cursor_pos - box->scroll_pos < 1)
 	{
 		box->scroll_pos--;
 	}
-	
-	if (box->cursor_pos > len)
+
+	if(box->cursor_pos > len)
 	{
 		box->cursor_pos = len;
 	}
-	if (box->cursor_pos < 0)
+
+	if(box->cursor_pos < 0)
 	{
 		box->cursor_pos = 0;
 	}
-	
+
 	scroll_offset = al_ustr_offset(box->text, box->scroll_pos);
 	cursor_offset = al_ustr_offset(box->text, box->cursor_pos);
-	
 	text = al_ref_ustr(&info, box->text, scroll_offset, cursor_offset);
-	if (al_get_ustr_width(font, text) > wgt->w)
+
+	if(al_get_ustr_width(font, text) > wgt->w)
 	{
 		box->scroll_pos++;
 	}
@@ -84,11 +84,12 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 {
 	int ret = 1;
 	WZ_EDITBOX* box = (WZ_EDITBOX*)wgt;
-	switch (event->type)
+
+	switch(event->type)
 	{
 		case WZ_DRAW:
 		{
-			if (wgt->flags & WZ_STATE_HIDDEN)
+			if(wgt->flags & WZ_STATE_HIDDEN)
 			{
 				ret = 0;
 			}
@@ -98,58 +99,58 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				int scroll_offset = al_ustr_offset(box->text, box->scroll_pos);
 				ALLEGRO_USTR_INFO info;
 				ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, scroll_offset, size);
-				
 				int pos = box->cursor_pos - box->scroll_pos;
-			
 				int flags = 0;
+
 				if(wgt->flags & WZ_STATE_DISABLED)
 					flags = WZ_STYLE_DISABLED;
 				else if(wgt->flags & WZ_STATE_HAS_FOCUS)
 					flags = WZ_STYLE_FOCUSED;
-			
+
 				wgt->theme->draw_editbox(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, pos, text, flags);
 			}
+
 			break;
 		}
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 		{
-			if (wgt->flags & WZ_STATE_DISABLED)
+			if(wgt->flags & WZ_STATE_DISABLED)
 			{
 				ret = 0;
 			}
-			else if (event->mouse.button == 1 && wz_widget_rect_test(wgt, event->mouse.x, event->mouse.y))
+			else if(event->mouse.button == 1 && wz_widget_rect_test(wgt, event->mouse.x, event->mouse.y))
 			{
 				int len = al_ustr_length(box->text);
 				ALLEGRO_USTR_INFO info;
 				ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, box->scroll_pos, len - 1);
-			
 				ALLEGRO_FONT* font = wgt->theme->get_font(wgt->theme, 0);
 				wz_ask_parent_for_focus(wgt);
 				box->cursor_pos = wz_get_text_pos(font, text, event->mouse.x - wgt->x) + box->scroll_pos;
 			}
 			else
 				ret = 0;
+
 			break;
 		}
 #if (ALLEGRO_SUB_VERSION > 0)
 		case ALLEGRO_EVENT_TOUCH_BEGIN:
 		{
-			if (wgt->flags & WZ_STATE_DISABLED)
+			if(wgt->flags & WZ_STATE_DISABLED)
 			{
 				ret = 0;
 			}
-			else if (wz_widget_rect_test(wgt, event->touch.x, event->touch.y))
+			else if(wz_widget_rect_test(wgt, event->touch.x, event->touch.y))
 			{
 				int len = al_ustr_length(box->text);
 				ALLEGRO_USTR_INFO info;
 				ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, box->scroll_pos, len - 1);
-
 				ALLEGRO_FONT* font = wgt->theme->get_font(wgt->theme, 0);
 				wz_ask_parent_for_focus(wgt);
 				box->cursor_pos = wz_get_text_pos(font, text, event->touch.x - wgt->x) + box->scroll_pos;
 			}
 			else
 				ret = 0;
+
 			break;
 		}
 #endif
@@ -162,12 +163,14 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 		{
 			if(box->own)
 				al_ustr_free(box->text);
+
 			ret = 0;
 			break;
 		}
 		case ALLEGRO_EVENT_KEY_CHAR:
 		{
 			int len;
+
 			if(wgt->flags & WZ_STATE_DISABLED || !(wgt->flags & WZ_STATE_HAS_FOCUS))
 			{
 				ret = 0;
@@ -177,9 +180,9 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			{
 				ret = 0;
 			}
-			
+
 			len = al_ustr_length(box->text);
-			
+
 			if((int)(event->keyboard.unichar) > 31 && (int)(event->keyboard.unichar) != 127)
 			{
 				al_ustr_insert_chr(box->text, al_ustr_offset(box->text, box->cursor_pos), event->keyboard.unichar);
@@ -187,43 +190,47 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			else
 			{
-				switch (event->keyboard.keycode)
+				switch(event->keyboard.keycode)
 				{
 					case ALLEGRO_KEY_BACKSPACE:
 					{
-						if (len > 0 && box->cursor_pos > 0)
+						if(len > 0 && box->cursor_pos > 0)
 						{
 							al_ustr_remove_chr(box->text, al_ustr_offset(box->text, box->cursor_pos - 1));
 							box->cursor_pos--;
 						}
+
 						break;
 					}
 					case ALLEGRO_KEY_DELETE:
 					{
-						if (len > 0 && box->cursor_pos < len)
+						if(len > 0 && box->cursor_pos < len)
 						{
 							al_ustr_remove_chr(box->text, al_ustr_offset(box->text, box->cursor_pos));
 						}
+
 						break;
 					}
 					case ALLEGRO_KEY_LEFT:
 					{
-						if (box->cursor_pos > 0)
+						if(box->cursor_pos > 0)
 						{
 							box->cursor_pos--;
 						}
 						else
 							ret = 0;
+
 						break;
 					}
 					case ALLEGRO_KEY_RIGHT:
 					{
-						if (box->cursor_pos < len)
+						if(box->cursor_pos < len)
 						{
 							box->cursor_pos++;
 						}
 						else
 							ret = 0;
+
 						break;
 					}
 					case ALLEGRO_KEY_HOME:
@@ -246,9 +253,8 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 						ret = 0;
 				}
 			}
-			
+
 			wz_snap_editbox(box);
-			
 			break;
 		}
 		case WZ_SET_CURSOR_POS:
@@ -264,6 +270,7 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			else
 				box->text = (ALLEGRO_USTR*)event->user.data3;
+
 			wz_snap_editbox(box);
 			break;
 		}
@@ -276,22 +283,26 @@ int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 		}
 		case ALLEGRO_EVENT_MOUSE_AXES:
 		{
-			if (wgt->flags & WZ_STATE_DISABLED)
+			if(wgt->flags & WZ_STATE_DISABLED)
 			{
 				ret = 0;
 			}
-			if (wz_widget_rect_test(wgt, event->mouse.x, event->mouse.y))
+
+			if(wz_widget_rect_test(wgt, event->mouse.x, event->mouse.y))
 			{
 				wz_ask_parent_for_focus(wgt);
 			}
+
 			return wz_widget_proc(wgt, event);
 			break;
 		}
 		default:
 			ret = 0;
 	}
-	if (ret == 0)
+
+	if(ret == 0)
 		ret = wz_widget_proc(wgt, event);
+
 	return ret;
 }
 
@@ -302,8 +313,8 @@ void wz_init_editbox(WZ_EDITBOX* box, WZ_WIDGET* parent, float x, float y, float
 {
 	WZ_WIDGET* wgt = (WZ_WIDGET*)box;
 	wz_init_widget(wgt, parent, x, y, w, h, id);
-	
 	box->own = own;
+
 	if(!text)
 	{
 		box->text = al_ustr_new("");
@@ -314,9 +325,9 @@ void wz_init_editbox(WZ_EDITBOX* box, WZ_WIDGET* parent, float x, float y, float
 	{
 		box->text = text;
 	}
+
 	box->cursor_pos = 0;
 	box->scroll_pos = 0;
-	
 	wgt->proc = wz_editbox_proc;
 }
 

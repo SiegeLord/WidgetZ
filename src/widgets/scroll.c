@@ -29,20 +29,21 @@ static int set_scroll_pos(WZ_SCROLL* scl, float x, float y)
 	float fraction;
 	int old_pos;
 	WZ_WIDGET* wgt = (WZ_WIDGET*)scl;
-	
-	if (wgt->h > wgt->w)
+
+	if(wgt->h > wgt->w)
 		fraction = ((float)(y - wgt->y)) / ((float)wgt->h);
 	else
 		fraction = ((float)(x - wgt->x)) / ((float)wgt->w);
-		
+
 	old_pos = scl->cur_pos;
 	scl->cur_pos = (int)(((float)scl->max_pos) * fraction + 0.5f);
-	
-	if (scl->cur_pos < 0)
+
+	if(scl->cur_pos < 0)
 		scl->cur_pos = 0;
-	if (scl->cur_pos > scl->max_pos)
+
+	if(scl->cur_pos > scl->max_pos)
 		scl->cur_pos = scl->max_pos;
-	
+
 	return old_pos != scl->cur_pos;
 }
 
@@ -62,46 +63,53 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 	WZ_SCROLL* scl = (WZ_SCROLL*)wgt;
 	float x, y;
 	int vertical = wgt->h > wgt->w;
-	switch (event->type)
+
+	switch(event->type)
 	{
 		case WZ_DRAW:
 		{
 			int flags = 0;
-			if (wgt->flags & WZ_STATE_HIDDEN)
+			float fraction;
+
+			if(wgt->flags & WZ_STATE_HIDDEN)
 			{
 				ret = 0;
 			}
-			else if (wgt->flags & WZ_STATE_DISABLED)
+			else if(wgt->flags & WZ_STATE_DISABLED)
 			{
 				flags = WZ_STYLE_DISABLED;
 			}
-			else if (wgt->flags & WZ_STATE_HAS_FOCUS)
+			else if(wgt->flags & WZ_STATE_HAS_FOCUS)
 			{
 				flags = WZ_STYLE_FOCUSED;
 			}
-			
-			{
-			float fraction = ((float)scl->cur_pos) / ((float)scl->max_pos);
+
+			fraction = ((float)scl->cur_pos) / ((float)scl->max_pos);
 			wgt->theme->draw_scroll(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, fraction, flags);
-			}
 			break;
 		}
 		case WZ_SET_SCROLL_POS:
 		{
 			scl->cur_pos = event->user.data3;
-			if (scl->cur_pos < 0)
+
+			if(scl->cur_pos < 0)
 				scl->cur_pos = 0;
-			if (scl->cur_pos > scl->max_pos)
+
+			if(scl->cur_pos > scl->max_pos)
 				scl->cur_pos = scl->max_pos;
+
 			break;
 		}
 		case WZ_SET_SCROLL_MAX_POS:
 		{
 			scl->max_pos = event->user.data3;
-			if (scl->max_pos < 0)
+
+			if(scl->max_pos < 0)
 				scl->max_pos = 0;
-			if (scl->cur_pos > scl->max_pos)
+
+			if(scl->cur_pos > scl->max_pos)
 				scl->cur_pos = scl->max_pos;
+
 			break;
 		}
 		case WZ_HANDLE_SHORTCUT:
@@ -109,7 +117,6 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			wz_ask_parent_for_focus(wgt);
 			break;
 		}
-		
 #if (ALLEGRO_SUB_VERSION > 0)
 		case ALLEGRO_EVENT_TOUCH_MOVE:
 			x = event->touch.x;
@@ -122,14 +129,16 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				x = event->mouse.x;
 				y = event->mouse.y;
 			}
-			if (wgt->flags & WZ_STATE_DISABLED)
+
+			if(wgt->flags & WZ_STATE_DISABLED)
 			{
 				ret = 0;
 			}
-			else if (event->mouse.dx != 0 || event->mouse.dy != 0)
+			else if(event->mouse.dx != 0 || event->mouse.dy != 0)
 			{
 				if(wz_widget_rect_test(wgt, x, y))
 					wz_ask_parent_for_focus(wgt);
+
 				if(scl->down)
 				{
 					if(set_scroll_pos(scl, x, y))
@@ -142,9 +151,9 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			{
 				ret = 0;
 			}
+
 			break;
 		}
-
 #if (ALLEGRO_SUB_VERSION > 0)
 		case ALLEGRO_EVENT_TOUCH_BEGIN:
 			x = event->touch.x;
@@ -157,7 +166,8 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				x = event->mouse.x;
 				y = event->mouse.y;
 			}
-			if (wgt->flags & WZ_STATE_DISABLED)
+
+			if(wgt->flags & WZ_STATE_DISABLED)
 			{
 				ret = 0;
 			}
@@ -165,12 +175,15 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			{
 				wz_ask_parent_for_focus(wgt);
 				wgt->hold_focus = 1;
+
 				if(set_scroll_pos(scl, x, y))
 					wz_trigger(wgt);
+
 				scl->down = 1;
 			}
 			else
 				ret = 0;
+
 			break;
 		}
 #if (ALLEGRO_SUB_VERSION > 0)
@@ -178,7 +191,7 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 #endif
 		case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
 		{
-			if (wgt->flags & WZ_STATE_DISABLED)
+			if(wgt->flags & WZ_STATE_DISABLED)
 			{
 				ret = 0;
 			}
@@ -187,73 +200,83 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 				scl->down = 0;
 				wgt->hold_focus = 0;
 			}
+
 			ret = 0;
 			break;
 		}
 		case ALLEGRO_EVENT_KEY_CHAR:
 		{
 			int old_pos = scl->cur_pos;;
-			switch (event->keyboard.keycode)
+
+			switch(event->keyboard.keycode)
 			{
 				case ALLEGRO_KEY_LEFT:
 				{
-					if (!vertical && scl->cur_pos > 0)
+					if(!vertical && scl->cur_pos > 0)
 						scl->cur_pos--;
 					else
 						ret = 0;
+
 					break;
 				}
 				case ALLEGRO_KEY_RIGHT:
 				{
-					if (!vertical && scl->cur_pos < scl->max_pos)
+					if(!vertical && scl->cur_pos < scl->max_pos)
 						scl->cur_pos++;
 					else
 						ret = 0;
+
 					break;
 				}
 				case ALLEGRO_KEY_UP:
 				{
-					if (vertical && scl->cur_pos > 0)
+					if(vertical && scl->cur_pos > 0)
 						scl->cur_pos--;
 					else
 						ret = 0;
+
 					break;
 				}
 				case ALLEGRO_KEY_DOWN:
 				{
-					if (vertical && scl->cur_pos < scl->max_pos)
+					if(vertical && scl->cur_pos < scl->max_pos)
 						scl->cur_pos++;
 					else
 						ret = 0;
+
 					break;
 				}
 				default:
 					ret = 0;
 			}
-			if (old_pos != scl->cur_pos)
+
+			if(old_pos != scl->cur_pos)
 			{
 				wz_trigger(wgt);
 			}
+
 			break;
 		}
 		case WZ_TRIGGER:
 		{
-			if (!(wgt->flags & WZ_STATE_HAS_FOCUS))
+			ALLEGRO_EVENT ev;
+
+			if(!(wgt->flags & WZ_STATE_HAS_FOCUS))
 			{
 				wz_ask_parent_for_focus(wgt);
 			}
-			{
-			ALLEGRO_EVENT ev;
+
 			wz_craft_event(&ev, WZ_SCROLL_POS_CHANGED, wgt, scl->cur_pos);
 			al_emit_user_event(wgt->source,	&ev, 0);
-			}
 			break;
 		}
 		default:
 			ret = 0;
 	}
-	if (ret == 0)
+
+	if(ret == 0)
 		ret = wz_widget_proc(wgt, event);
+
 	return ret;
 }
 

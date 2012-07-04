@@ -37,33 +37,39 @@ int wz_image_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 {
 	int ret = 1;
 	WZ_IMAGE_BUTTON* but = (WZ_IMAGE_BUTTON*)wgt;
-	switch (event->type)
+
+	switch(event->type)
 	{
 		case WZ_DRAW:
 		{
 			ALLEGRO_BITMAP* image = 0;
-			if (wgt->flags & WZ_STATE_HIDDEN)
+
+			if(wgt->flags & WZ_STATE_HIDDEN)
 				break;
-			else if (wgt->flags & WZ_STATE_DISABLED)
+			else if(wgt->flags & WZ_STATE_DISABLED)
 				image = but->disabled;
 			else
 			{
 				WZ_BUTTON* button = (WZ_BUTTON*)but;
-				if (button->down)
+
+				if(button->down)
 					image = but->down;
-				else if (wgt->flags & WZ_STATE_HAS_FOCUS)
+				else if(wgt->flags & WZ_STATE_HAS_FOCUS)
 					image = but->focused;
 				else
 					image = but->normal;
 			}
+
 			wgt->theme->draw_image(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, image);
 			break;
 		}
 		default:
 			ret = 0;
 	}
-	if (ret == 0)
+
+	if(ret == 0)
 		ret = wz_button_proc(wgt, event);
+
 	return ret;
 }
 
