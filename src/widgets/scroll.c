@@ -23,6 +23,29 @@ distribution.
 
 #include "widgetz/widgetz_internal.h"
 
+/* Returns 1 if the position changed, 0 otherwise*/
+static int set_scroll_pos(WZ_SCROLL* scl, float x, float y)
+{
+	float fraction;
+	int old_pos;
+	WZ_WIDGET* wgt = (WZ_WIDGET*)scl;
+	
+	if (wgt->h > wgt->w)
+		fraction = ((float)(y - wgt->y)) / ((float)wgt->h);
+	else
+		fraction = ((float)(x - wgt->x)) / ((float)wgt->w);
+		
+	old_pos = scl->cur_pos;
+	scl->cur_pos = (int)(((float)scl->max_pos) * fraction + 0.5f);
+	
+	if (scl->cur_pos < 0)
+		scl->cur_pos = 0;
+	if (scl->cur_pos > scl->max_pos)
+		scl->cur_pos = scl->max_pos;
+	
+	return old_pos != scl->cur_pos;
+}
+
 /*
 Title: Scroll Bar
 
@@ -37,6 +60,7 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 {
 	int ret = 1;
 	WZ_SCROLL* scl = (WZ_SCROLL*)wgt;
+	float x, y;
 	int vertical = wgt->h > wgt->w;
 	switch (event->type)
 	{
@@ -85,94 +109,87 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			wz_ask_parent_for_focus(wgt);
 			break;
 		}
+		
+#if (ALLEGRO_SUB_VERSION > 0)
+		case ALLEGRO_EVENT_TOUCH_MOVE:
+			x = event->touch.x;
+			y = event->touch.y;
+#endif
 		case ALLEGRO_EVENT_MOUSE_AXES:
-		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 		{
-			int button_down;
-			ALLEGRO_MOUSE_STATE state;
-			al_get_mouse_state(&state);
-			button_down = state.buttons;
+			if(event->type == ALLEGRO_EVENT_MOUSE_AXES)
+			{
+				x = event->mouse.x;
+				y = event->mouse.y;
+			}
 			if (wgt->flags & WZ_STATE_DISABLED)
 			{
 				ret = 0;
 			}
-			else if(wz_widget_rect_test(wgt, event->mouse.x, event->mouse.y))
+			else if (event->mouse.dx != 0 || event->mouse.dy != 0)
+			{
+				if(wz_widget_rect_test(wgt, x, y))
+					wz_ask_parent_for_focus(wgt);
+				if(scl->down)
+				{
+					if(set_scroll_pos(scl, x, y))
+						wz_trigger(wgt);
+				}
+
+				ret = 0;
+			}
+			else
+			{
+				ret = 0;
+			}
+			break;
+		}
+
+#if (ALLEGRO_SUB_VERSION > 0)
+		case ALLEGRO_EVENT_TOUCH_BEGIN:
+			x = event->touch.x;
+			y = event->touch.y;
+#endif
+		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+		{
+			if(event->type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+			{
+				x = event->mouse.x;
+				y = event->mouse.y;
+			}
+			if (wgt->flags & WZ_STATE_DISABLED)
+			{
+				ret = 0;
+			}
+			else if(wz_widget_rect_test(wgt, x, y))
 			{
 				wz_ask_parent_for_focus(wgt);
-				if(button_down == 1)
-				{
-					float fraction;
-					int old_pos;
-					
-					if (vertical)
-						fraction = ((float)(event->mouse.y - wgt->y)) / ((float)wgt->h);
-					else
-						fraction = ((float)(event->mouse.x - wgt->x)) / ((float)wgt->w);
-						
-					old_pos = scl->cur_pos;
-					scl->cur_pos = (int)(((float)scl->max_pos) * fraction + 0.5f);
-					if (old_pos != scl->cur_pos)
-					{
-						wz_trigger(wgt);
-					}
-				}
-			}
-			else if (event->mouse.dz != 0)
-			{
-				if (event->mouse.dz > 0)
-				{
-					if (scl->cur_pos > 0)
-						scl->cur_pos--;
-					else
-						ret = 0;
-				}
-				else
-				{
-					if (scl->cur_pos < scl->max_pos)
-						scl->cur_pos++;
-					else
-						ret = 0;
-				}
+				wgt->hold_focus = 1;
+				if(set_scroll_pos(scl, x, y))
+					wz_trigger(wgt);
+				scl->down = 1;
 			}
 			else
 				ret = 0;
 			break;
 		}
 #if (ALLEGRO_SUB_VERSION > 0)
-		case ALLEGRO_EVENT_TOUCH_BEGIN:
+		case ALLEGRO_EVENT_TOUCH_END:
+#endif
+		case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
 		{
-			int button_down = 1;
 			if (wgt->flags & WZ_STATE_DISABLED)
 			{
 				ret = 0;
 			}
-			else if(wz_widget_rect_test(wgt, event->touch.x, event->touch.y))
-			{
-				wz_ask_parent_for_focus(wgt);
-				if(button_down == 1)
-				{
-					float fraction;
-					int old_pos;
-					
-					if (vertical)
-						fraction = ((float)(event->touch.y - wgt->y)) / ((float)wgt->h);
-					else
-						fraction = ((float)(event->touch.x - wgt->x)) / ((float)wgt->w);
-                    
-					old_pos = scl->cur_pos;
-					scl->cur_pos = (int)(((float)scl->max_pos) * fraction + 0.5f);
-					if (old_pos != scl->cur_pos)
-					{
-						wz_trigger(wgt);
-					}
-				}
-			}
 			else
-				ret = 0;
+			{
+				scl->down = 0;
+				wgt->hold_focus = 0;
+			}
+			ret = 0;
 			break;
-			
 		}
-#endif
 		case ALLEGRO_EVENT_KEY_CHAR:
 		{
 			int old_pos = scl->cur_pos;;
@@ -250,6 +267,7 @@ void wz_init_scroll(WZ_SCROLL* scl, WZ_WIDGET* parent, float x, float y, float w
 	wgt->proc = wz_scroll_proc;
 	scl->cur_pos = 0;
 	scl->max_pos = max_pos;
+	scl->down = 0;
 }
 
 /*

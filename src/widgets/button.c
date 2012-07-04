@@ -37,11 +37,11 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 {
 	int ret = 1;
 	WZ_BUTTON* but = (WZ_BUTTON*)wgt;
+	float x, y;
 	switch (event->type)
 	{
 		case WZ_LOSE_FOCUS:
 		{
-			but->down = 0;
 			ret = 0;
 			break;
 		}
@@ -67,16 +67,53 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			break;
 		}
-		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+#if (ALLEGRO_SUB_VERSION > 0)
+		case ALLEGRO_EVENT_TOUCH_MOVE:
+			x = event->touch.x;
+			y = event->touch.y;
+#endif
+		case ALLEGRO_EVENT_MOUSE_AXES:
 		{
+			if(event->type == ALLEGRO_EVENT_MOUSE_AXES)
+			{
+				x = event->mouse.x;
+				y = event->mouse.y;
+			}
 			if (wgt->flags & WZ_STATE_DISABLED)
 			{
 				ret = 0;
 			}
-			else if (event->mouse.button == 1 && wz_widget_rect_test(wgt, event->mouse.x, event->mouse.y))
+			else if ((event->mouse.dx != 0 || event->mouse.dy != 0) && wz_widget_rect_test(wgt, x, y))
+			{
+				wz_ask_parent_for_focus(wgt);
+			}
+			else
+			{
+				ret = 0;
+			}
+			break;
+		}
+#if (ALLEGRO_SUB_VERSION > 0)
+		case ALLEGRO_EVENT_TOUCH_BEGIN:
+			x = event->touch.x;
+			y = event->touch.y;
+#endif
+		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+		{
+			if(event->type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+			{
+				x = event->mouse.x;
+				y = event->mouse.y;
+			}
+			if (wgt->flags & WZ_STATE_DISABLED)
+			{
+				ret = 0;
+			}
+			else if (event->mouse.button == 1 && wz_widget_rect_test(wgt, x, y))
 			{
 				wz_ask_parent_for_focus(wgt);
 				but->down = 1;
+				wgt->hold_focus = 1;
 			}
 			else
 				ret = 0;
@@ -109,7 +146,7 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 		{
 			switch (event->keyboard.keycode)
 			{
-			case ALLEGRO_KEY_ENTER:
+				case ALLEGRO_KEY_ENTER:
 				{
 					if (wgt->flags & WZ_STATE_DISABLED)
 					{
@@ -123,8 +160,8 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 						ret = 0;
 					break;
 				}
-			default:
-				ret = 0;
+				default:
+					ret = 0;
 			}
 			break;
 		}
@@ -144,66 +181,37 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			break;
 		}
+#if (ALLEGRO_SUB_VERSION > 0)
+		case ALLEGRO_EVENT_TOUCH_END:
+			x = event->touch.x;
+			y = event->touch.y;
+#endif
 		case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
 		{
+			if(event->type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
+			{
+				x = event->mouse.x;
+				y = event->mouse.y;
+			}
 			if (wgt->flags & WZ_STATE_DISABLED)
 			{
 				ret = 0;
 			}
-			else if (event->mouse.button == 1 && wz_widget_rect_test(wgt, event->mouse.x, event->mouse.y))
+			else if (but->down == 1 && event->mouse.button == 1)
 			{
-				wz_trigger(wgt);
-			}
-			else
-				ret = 0;
-			break;
-		}
-		case ALLEGRO_EVENT_MOUSE_AXES:
-		{
-			if (wgt->flags & WZ_STATE_DISABLED)
-			{
-				ret = 0;
-			}
-			else if ((event->mouse.dx != 0 || event->mouse.dy != 0) && wz_widget_rect_test(wgt, event->mouse.x, event->mouse.y))
-			{
-				ALLEGRO_MOUSE_STATE state;
-				al_get_mouse_state(&state);
-				if (state.buttons & 1)
+				if(wz_widget_rect_test(wgt, x, y))
 				{
-					but->down = 1;
+					wz_trigger(wgt);
 				}
 				else
-					but->down = 0;
-				wz_ask_parent_for_focus(wgt);
-			}
-			else
-			{
+				{
+					ret = 0;
+				}
 				but->down = 0;
-				ret = 0;
+				wgt->hold_focus = 0;
 			}
 			break;
 		}
-#if (ALLEGRO_SUB_VERSION > 0)
-		case ALLEGRO_EVENT_TOUCH_BEGIN:
-		{
-			if (wgt->flags & WZ_STATE_DISABLED)
-			{
-				ret = 0;
-			}
-			else if ((event->touch.x != 0 || event->touch.y != 0) && wz_widget_rect_test(wgt, event->touch.x, event->touch.y))
-			{
-				but->down = 1;
-				wz_ask_parent_for_focus(wgt);
-				wz_trigger(wgt);
-			}
-			else
-			{
-				but->down = 0;
-				ret = 0;
-			}
-			break;
-		}
-#endif
 		case WZ_DESTROY:
 		{
 			if(but->own)

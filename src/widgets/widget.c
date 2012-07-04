@@ -99,40 +99,22 @@ int wz_widget_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 		case WZ_WANT_FOCUS:
 		{
 			WZ_WIDGET* child = wgt->first_child;
+			ALLEGRO_EVENT ev;
+			int all_unfocused = 1;
 			while (child)
 			{
+				if(child->hold_focus)
+				{
+					all_unfocused = 0;
+					break;
+				}
 				wz_focus(child, 0);
 				child = child->next_sib;
 			}
+			if(all_unfocused)
 			{
-			ALLEGRO_EVENT ev;
-			wz_craft_event(&ev, WZ_TAKE_FOCUS, wgt, 0);
-			
-			child = wgt->first_child;
-			wz_send_event((WZ_WIDGET*)event->user.data2, &ev);
-			}
-			break;
-		}
-		case ALLEGRO_EVENT_MOUSE_AXES:
-		{
-			if (wgt->flags & WZ_STATE_DISABLED)
-			{
-				ret = 0;
-			}
-			else if (event->mouse.dz != 0 && wgt->first_child == 0 && wgt->parent != 0)
-			{
-				if (event->mouse.dz > 0)
-				{
-					wz_ask_parent_to_focus_prev(wgt);
-				}
-				else
-				{
-					wz_ask_parent_to_focus_next(wgt);
-				}
-			}
-			else
-			{
-				ret = 0;
+				wz_craft_event(&ev, WZ_TAKE_FOCUS, wgt, 0);
+				wz_send_event((WZ_WIDGET*)event->user.data2, &ev);
 			}
 			break;
 		}
@@ -271,6 +253,7 @@ void wz_init_widget(WZ_WIDGET* wgt, WZ_WIDGET* parent, float x, float y, float w
 	wgt->next_sib = 0;
 	wgt->prev_sib = 0;
 	wgt->id = id;
+	wgt->hold_focus = 0;
 	if (wgt->id == -1)
 	{
 		if (parent == 0)

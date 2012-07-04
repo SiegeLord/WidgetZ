@@ -58,15 +58,13 @@ int wz_ask_parent_for_focus(WZ_WIDGET* wgt)
 	}
 	else
 	{
+		ALLEGRO_EVENT event;
 		if (!(wgt->parent->flags & WZ_STATE_HAS_FOCUS))
 		{
 			wz_ask_parent_for_focus(wgt->parent);
 		}
-		{
-			ALLEGRO_EVENT event;
-			wz_craft_event(&event, WZ_WANT_FOCUS, wgt, 0);
-			wz_send_event(wgt->parent, &event);
-		}
+		wz_craft_event(&event, WZ_WANT_FOCUS, wgt, 0);
+		wz_send_event(wgt->parent, &event);
 	}
 	return 1;
 }

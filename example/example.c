@@ -104,6 +104,8 @@ int main(int argc, char *argv[])
 	wz_create_toggle_button(gui, 0*size, 0*size, 200*size, 50*size, al_ustr_new("Toggle 2"), 1, 1, 6);
 	wz_create_toggle_button(gui, 0*size, 0*size, 200*size, 50*size, al_ustr_new("Toggle 3"), 1, 1, 7);
 	
+	wz_create_button(gui, 0*size, 0*size, 200*size, 50*size, al_ustr_new("Button"), 1, -1);
+	
 	wgt = (WZ_WIDGET*)wz_create_button(gui, 0*size, 0*size, 200*size, 50*size, al_ustr_new("Quit"), 1, 1);
 	wz_set_shortcut(wgt, ALLEGRO_KEY_Q, ALLEGRO_KEYMOD_CTRL);
 	

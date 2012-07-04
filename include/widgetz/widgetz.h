@@ -114,6 +114,8 @@ typedef struct WZ_WIDGET
 	
 	WZ_SHORTCUT shortcut;
 	
+	int hold_focus;
+	
 	/*
 	Variable: flags
 	Flags of the widget. A combination of some sort of <Widget States>
@@ -228,6 +230,7 @@ typedef struct WZ_SCROLL
 	WZ_WIDGET wgt;
 	int max_pos;
 	int cur_pos;
+	int down;
 } WZ_SCROLL;
 
 /*
