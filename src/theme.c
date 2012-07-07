@@ -325,13 +325,15 @@ void wz_def_draw_textbox(struct WZ_THEME* theme, float x, float y, float w, floa
 	wz_draw_multi_text(x, y, w, h, halign, valign, text_col, thm->font, text);
 }
 
-void wz_def_draw_scroll(struct WZ_THEME* theme, float x, float y, float w, float h, float fraction, int style)
+void wz_def_draw_scroll(struct WZ_THEME* theme, float x, float y, float w, float h, float fraction, float slider_size, int style)
 {
 	WZ_DEF_THEME* thm = (WZ_DEF_THEME*)theme;
 	int vertical = h > w;
 	ALLEGRO_COLOR col;
 	float xpos;
 	float ypos;
+	float slider_w;
+	float slider_h;
 
 	if(style & WZ_STYLE_FOCUSED)
 	{
@@ -348,18 +350,24 @@ void wz_def_draw_scroll(struct WZ_THEME* theme, float x, float y, float w, float
 
 	if(vertical)
 	{
-		xpos = x + w / 2;
-		ypos = y + fraction * h;
-		wz_draw_3d_rectangle(xpos - 2, y, xpos + 2, y + h, 1, wz_scale_color(thm->color1, 0.75), true);
+		float max_size = 0.9f * h;
+		slider_h = slider_size > max_size ? max_size : slider_size;
+		slider_w = w;
+		xpos = x;
+		ypos = y + fraction * (h - slider_h);
+		wz_draw_3d_rectangle(xpos - 4 + w / 2, y, xpos + 4 + w / 2, y + h, 2, wz_scale_color(thm->color1, 0.75), true);
 	}
 	else
 	{
-		xpos = x + fraction * w;
-		ypos = y + h / 2;
-		wz_draw_3d_rectangle(x, ypos - 2, x + w, ypos + 2, 1, wz_scale_color(thm->color1, 0.75), true);
+		float max_size = 0.9f * w;
+		slider_h = h;
+		slider_w = slider_size > max_size ? max_size : slider_size;
+		xpos = x + fraction * (w - slider_w);
+		ypos = y;
+		wz_draw_3d_rectangle(x, ypos - 4 + h / 2, x + w, ypos + 4 + h / 2, 2, wz_scale_color(thm->color1, 0.75), true);
 	}
 
-	wz_draw_3d_rectangle(xpos - 4, ypos - 4, xpos + 5, ypos + 5, 1, col, false);
+	wz_draw_3d_rectangle(xpos, ypos, xpos + slider_w, ypos + slider_h, 1, col, false);
 }
 
 void wz_def_draw_editbox(struct WZ_THEME* theme, float x, float y, float w, float h, int cursor_pos, ALLEGRO_USTR* text, int style)

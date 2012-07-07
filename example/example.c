@@ -94,22 +94,22 @@ int main(int argc, char* argv[])
 	Define all other gui elements, fill_layout is an automatic layout container
 	*/
 	wz_create_fill_layout(gui, 50 * size, 50 * size, 300 * size, 450 * size, 50 * size, 20 * size, WZ_ALIGN_CENTRE, WZ_ALIGN_TOP, -1);
-	wz_create_textbox(gui, 0 * size, 0 * size, 200 * size, 50 * size, WZ_ALIGN_CENTRE, WZ_ALIGN_CENTRE, al_ustr_new("Welcome to WidgetZ!"), 1, -1);
-	wz_create_toggle_button(gui, 0 * size, 0 * size, 200 * size, 50 * size, al_ustr_new("Toggle 1"), 1, 1, 5);
-	wz_create_toggle_button(gui, 0 * size, 0 * size, 200 * size, 50 * size, al_ustr_new("Toggle 2"), 1, 1, 6);
-	wz_create_toggle_button(gui, 0 * size, 0 * size, 200 * size, 50 * size, al_ustr_new("Toggle 3"), 1, 1, 7);
-	wz_create_button(gui, 0 * size, 0 * size, 200 * size, 50 * size, al_ustr_new("Button"), 1, -1);
-	wgt = (WZ_WIDGET*)wz_create_button(gui, 0 * size, 0 * size, 200 * size, 50 * size, al_ustr_new("Quit"), 1, 1);
+	wz_create_textbox(gui, 0, 0, 200 * size, 50 * size, WZ_ALIGN_CENTRE, WZ_ALIGN_CENTRE, al_ustr_new("Welcome to WidgetZ!"), 1, -1);
+	wz_create_toggle_button(gui, 0, 0, 200 * size, 50 * size, al_ustr_new("Toggle 1"), 1, 1, 5);
+	wz_create_toggle_button(gui, 0, 0, 200 * size, 50 * size, al_ustr_new("Toggle 2"), 1, 1, 6);
+	wz_create_toggle_button(gui, 0, 0, 200 * size, 50 * size, al_ustr_new("Toggle 3"), 1, 1, 7);
+	wz_create_button(gui, 0, 0, 200 * size, 50 * size, al_ustr_new("Button"), 1, -1);
+	wgt = (WZ_WIDGET*)wz_create_button(gui, 0, 0, 200 * size, 50 * size, al_ustr_new("Quit"), 1, 1);
 	wz_set_shortcut(wgt, ALLEGRO_KEY_Q, ALLEGRO_KEYMOD_CTRL);
 	wz_create_fill_layout(gui, 350 * size, 50 * size, 300 * size, 450 * size, 50 * size, 20 * size, WZ_ALIGN_CENTRE, WZ_ALIGN_TOP, -1);
-	wz_create_textbox(gui, 0 * size, 0 * size, 200 * size, 50 * size, WZ_ALIGN_CENTRE, WZ_ALIGN_CENTRE, al_ustr_new("Scroll Bars:"), 1, -1);
-	wz_create_scroll(gui, 0 * size, 0 * size, 200 * size, 50 * size, 20 * size, 9);
-	wz_create_scroll(gui, 0 * size, 0 * size, 50 * size, 200 * size, 20 * size, 9);
-	wz_create_scroll(gui, 0 * size, 0 * size, 50 * size, 200 * size, 20 * size, 9);
+	wz_create_textbox(gui, 0, 0, 200 * size, 50 * size, WZ_ALIGN_CENTRE, WZ_ALIGN_CENTRE, al_ustr_new("Scroll Bars:"), 1, -1);
+	wz_create_scroll(gui, 0, 0, 200 * size, 20 * size, 20, 50 * size, 9);
+	wz_create_scroll(gui, 0, 0, 20 * size, 200 * size, 20, 50 * size, 9);
+	wz_create_scroll(gui, 0, 0, 20 * size, 200 * size, 20, 50 * size, 9);
 	wz_create_fill_layout(gui, 650 * size, 50 * size, 300 * size, 450 * size, 20 * size, 20 * size, WZ_ALIGN_CENTRE, WZ_ALIGN_TOP, -1);
-	wz_create_textbox(gui, 0 * size, 0 * size, 200 * size, 50 * size, WZ_ALIGN_CENTRE, WZ_ALIGN_CENTRE, al_ustr_new("Edit Box:"), 1, -1);
-	wgt = (WZ_WIDGET*)wz_create_editbox(gui, 0 * size, 0 * size, 200 * size, 50 * size, al_ustr_new("Type here..."), 1, -1);
-	wz_create_textbox(gui, 0 * size, 0 * size, 200 * size, 50 * size, WZ_ALIGN_LEFT, WZ_ALIGN_TOP, al_ustr_new("A textbox with a lot of text"
+	wz_create_textbox(gui, 0, 0, 200 * size, 50 * size, WZ_ALIGN_CENTRE, WZ_ALIGN_CENTRE, al_ustr_new("Edit Box:"), 1, -1);
+	wgt = (WZ_WIDGET*)wz_create_editbox(gui, 0, 0, 200 * size, 50 * size, al_ustr_new("Type here..."), 1, -1);
+	wz_create_textbox(gui, 0, 0, 200 * size, 50 * size, WZ_ALIGN_LEFT, WZ_ALIGN_TOP, al_ustr_new("A textbox with a lot of text"
 	                  " in it. Also supports new lines:\n\nNew paragraph.\n"
 	                  "Also supports unicode:\n\n"
 	                  "Привет"), 1, -1);

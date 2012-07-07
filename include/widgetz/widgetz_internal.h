@@ -32,7 +32,7 @@ void wz_init_grid_layout(WZ_FILL_LAYOUT* box, WZ_WIDGET* parent, float x, float 
 void wz_init_box(WZ_WIDGET* wgt, WZ_WIDGET* parent, float x, float y, float w, float h, int id);
 void wz_init_textbox(WZ_TEXTBOX* box, WZ_WIDGET* parent, float x, float y, float w, float h, int halign, int valign, ALLEGRO_USTR* text, int own, int id);
 void wz_init_button(WZ_BUTTON* but, WZ_WIDGET* parent, float x, float y, float w, float h, ALLEGRO_USTR* text, int own, int id);
-void wz_init_scroll(WZ_SCROLL* scl, WZ_WIDGET* parent, float x, float y, float w, float h, int max_pos, int id);
+void wz_init_scroll(WZ_SCROLL* scl, WZ_WIDGET* parent, float x, float y, float w, float h, int max_pos, int slider_size, int id);
 void wz_init_toggle_button(WZ_TOGGLE* tog, WZ_WIDGET* parent, float x, float y, float w, float h, ALLEGRO_USTR* text, int own, int group, int id);
 void wz_init_editbox(WZ_EDITBOX* box, WZ_WIDGET* parent, float x, float y, float w, float h, ALLEGRO_USTR* text, int own, int id);
 void wz_init_layout_stop(WZ_WIDGET* box, WZ_WIDGET* parent, int id);

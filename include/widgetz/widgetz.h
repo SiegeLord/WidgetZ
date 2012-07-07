@@ -22,7 +22,7 @@ typedef struct WZ_THEME
 	void (*draw_button)(struct WZ_THEME* theme, float x, float y, float w, float h, ALLEGRO_USTR* text, int style);
 	void (*draw_box)(struct WZ_THEME* theme, float x, float y, float w, float h, int style);
 	void (*draw_textbox)(struct WZ_THEME* theme, float x, float y, float w, float h, int halign, int valign, ALLEGRO_USTR* text, int style);
-	void (*draw_scroll)(struct WZ_THEME* theme, float x, float y, float w, float h, float fraction, int style);
+	void (*draw_scroll)(struct WZ_THEME* theme, float x, float y, float w, float h, float fraction, float slider_size, int style);
 	void (*draw_editbox)(struct WZ_THEME* theme, float x, float y, float w, float h, int cursor_pos, ALLEGRO_USTR* text, int style);
 	void (*draw_image)(struct WZ_THEME* theme, float x, float y, float w, float h, ALLEGRO_BITMAP* image);
 	ALLEGRO_FONT* (*get_font)(struct WZ_THEME* theme, int font_num);
@@ -231,6 +231,7 @@ typedef struct WZ_SCROLL
 	int max_pos;
 	int cur_pos;
 	int down;
+	int slider_size;
 } WZ_SCROLL;
 
 /*
@@ -414,7 +415,7 @@ WZ_TEXTBOX* wz_create_textbox(WZ_WIDGET* parent, float x, float y, float w, floa
 WZ_TOGGLE* wz_create_toggle_button(WZ_WIDGET* parent, float x, float y, float w, float h, ALLEGRO_USTR* text, int own, int group, int id);
 WZ_WIDGET* wz_create_box(WZ_WIDGET* parent, float x, float y, float w, float h, int id);
 WZ_FILL_LAYOUT* wz_create_fill_layout(WZ_WIDGET* parent, float x, float y, float w, float h, float hspace, float vspace, int halign, int valign, int id);
-WZ_SCROLL* wz_create_scroll(WZ_WIDGET* parent, float x, float y, float w, float h, int max_pos, int id);
+WZ_SCROLL* wz_create_scroll(WZ_WIDGET* parent, float x, float y, float w, float h, int max_pos, int slider_size, int id);
 WZ_EDITBOX* wz_create_editbox(WZ_WIDGET* parent, float x, float y, float w, float h, ALLEGRO_USTR* text, int own, int id);
 WZ_WIDGET* wz_create_layout_stop(WZ_WIDGET* parent, int id);
 WZ_IMAGE_BUTTON* wz_create_image_button(WZ_WIDGET* parent, float x, float y, float w, float h, ALLEGRO_BITMAP* normal, ALLEGRO_BITMAP* down, ALLEGRO_BITMAP* focused, ALLEGRO_BITMAP* disabled, int id);

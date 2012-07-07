@@ -31,9 +31,17 @@ static int set_scroll_pos(WZ_SCROLL* scl, float x, float y)
 	WZ_WIDGET* wgt = (WZ_WIDGET*)scl;
 
 	if(wgt->h > wgt->w)
-		fraction = ((float)(y - wgt->y)) / ((float)wgt->h);
+	{
+		float max_size = 0.9f * wgt->h;
+		float slider_size = scl->slider_size > max_size ? max_size : scl->slider_size;
+		fraction = ((float)(y - wgt->y - slider_size / 2)) / ((float)wgt->h - slider_size);
+	}
 	else
-		fraction = ((float)(x - wgt->x)) / ((float)wgt->w);
+	{
+		float max_size = 0.9f * wgt->w;
+		float slider_size = scl->slider_size > max_size ? max_size : scl->slider_size;
+		fraction = ((float)(x - wgt->x - slider_size / 2)) / ((float)wgt->w - slider_size);
+	}
 
 	old_pos = scl->cur_pos;
 	scl->cur_pos = (int)(((float)scl->max_pos) * fraction + 0.5f);
@@ -85,7 +93,7 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 
 			fraction = ((float)scl->cur_pos) / ((float)scl->max_pos);
-			wgt->theme->draw_scroll(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, fraction, flags);
+			wgt->theme->draw_scroll(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, fraction, scl->slider_size, flags);
 			break;
 		}
 		case WZ_SET_SCROLL_POS:
@@ -283,7 +291,7 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 /*
 Function: wz_init_scroll
 */
-void wz_init_scroll(WZ_SCROLL* scl, WZ_WIDGET* parent, float x, float y, float w, float h, int max_pos, int id)
+void wz_init_scroll(WZ_SCROLL* scl, WZ_WIDGET* parent, float x, float y, float w, float h, int max_pos, int slider_size, int id)
 {
 	WZ_WIDGET* wgt = (WZ_WIDGET*)scl;
 	wz_init_widget(wgt, parent, x, y, w, h, id);
@@ -291,6 +299,7 @@ void wz_init_scroll(WZ_SCROLL* scl, WZ_WIDGET* parent, float x, float y, float w
 	scl->cur_pos = 0;
 	scl->max_pos = max_pos;
 	scl->down = 0;
+	scl->slider_size = slider_size;
 }
 
 /*
@@ -308,9 +317,9 @@ See Also:
 
 <wz_create_widget>
 */
-WZ_SCROLL* wz_create_scroll(WZ_WIDGET* parent, float x, float y, float w, float h, int max_pos, int id)
+WZ_SCROLL* wz_create_scroll(WZ_WIDGET* parent, float x, float y, float w, float h, int max_pos, int slider_size, int id)
 {
 	WZ_SCROLL* scl = malloc(sizeof(WZ_SCROLL));
-	wz_init_scroll(scl, parent, x, y, w, h, max_pos, id);
+	wz_init_scroll(scl, parent, x, y, w, h, max_pos, slider_size, id);
 	return scl;
 }
