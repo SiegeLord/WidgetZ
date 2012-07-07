@@ -269,20 +269,6 @@ void wz_init_widget(WZ_WIDGET* wgt, WZ_WIDGET* parent, float x, float y, float w
 	wgt->id = id;
 	wgt->hold_focus = 0;
 
-	if(wgt->id == -1)
-	{
-		if(parent == 0)
-			wgt->id = 0;
-		else if(parent->last_child != 0)
-		{
-			wgt->id = parent->last_child->id + 1;
-		}
-		else
-		{
-			wgt->id = parent->id + 1;
-		}
-	}
-
 	wgt->source = malloc(sizeof(ALLEGRO_EVENT_SOURCE));
 	al_init_user_event_source(wgt->source);
 	wgt->shortcut.modifiers = 0;
