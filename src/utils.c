@@ -465,7 +465,7 @@ ALLEGRO_COLOR wz_blend_colors(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2, float frac)
 /*
 Function: wz_scale_color
 
-Tints an Allegro color by multiplying each component by a constant.
+Tints an Allegro color by multiplying each component by a constant. Alpha is not touched.
 
 Parameters:
 scale - Scaling factor. 0 results in a black color, 1 results in no change
@@ -473,7 +473,8 @@ scale - Scaling factor. 0 results in a black color, 1 results in no change
 ALLEGRO_COLOR wz_scale_color(ALLEGRO_COLOR c, float scale)
 {
 	ALLEGRO_COLOR ret;
-	ret.a = c.a * scale;
+	//ret.a = c.a * scale;
+	ret.a = c.a;
 	ret.r = c.r * scale;
 	ret.g = c.g * scale;
 	ret.b = c.b * scale;
@@ -487,8 +488,8 @@ ALLEGRO_COLOR wz_scale_color(ALLEGRO_COLOR c, float scale)
 	if(ret.b > 1)
 		ret.b = 1;
 
-	if(ret.a > 1)
-		ret.a = 1;
+	//if(ret.a > 1)
+	//	ret.a = 1;
 
 	return ret;
 }
