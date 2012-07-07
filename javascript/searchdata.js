@@ -119,7 +119,7 @@ var indexSectionsWithContent = {
       "Y": false,
       "Z": false
       },
-   "Classes": {
+   "Constants": {
       "Symbols": false,
       "Numbers": false,
       "A": false,
@@ -149,7 +149,7 @@ var indexSectionsWithContent = {
       "Y": false,
       "Z": false
       },
-   "Constants": {
+   "Classes": {
       "Symbols": false,
       "Numbers": false,
       "A": false,
