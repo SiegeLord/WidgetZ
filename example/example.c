@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
 #endif //IPHONE
 	al_install_keyboard();
 	// Load a font
-	font = al_load_font("DejaVuSans.ttf", font_size * size, 0);
+	font = al_load_font("data/DejaVuSans.ttf", font_size * size, 0);
 	al_install_mouse();
 	// Start the event queue to handle keyboard input and our timer
 	queue = al_create_event_queue();
@@ -101,12 +101,12 @@ int main(int argc, char* argv[])
 	skin_theme.theme.font = font;
 	skin_theme.theme.color1 = al_map_rgba_f(0, 0.6, 0, 1);
 	skin_theme.theme.color2 = al_map_rgba_f(1, 1, 0, 1);
-	skin_theme.button_up_bitmap = al_load_bitmap("button_up.png");
-	skin_theme.button_down_bitmap =al_load_bitmap("button_down.png");
-	skin_theme.box_bitmap = al_load_bitmap("box.png");
-	skin_theme.editbox_bitmap = al_load_bitmap("editbox.png");
-	skin_theme.scroll_track_bitmap = al_load_bitmap("scroll_track.png");
-	skin_theme.slider_bitmap = al_load_bitmap("slider.png");
+	skin_theme.button_up_bitmap = al_load_bitmap("data/button_up.png");
+	skin_theme.button_down_bitmap =al_load_bitmap("data/button_down.png");
+	skin_theme.box_bitmap = al_load_bitmap("data/box.png");
+	skin_theme.editbox_bitmap = al_load_bitmap("data/editbox.png");
+	skin_theme.scroll_track_bitmap = al_load_bitmap("data/scroll_track.png");
+	skin_theme.slider_bitmap = al_load_bitmap("data/slider.png");
 
 	//al_set_new_bitmap_flags(0);
 
