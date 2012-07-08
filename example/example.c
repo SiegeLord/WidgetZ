@@ -22,6 +22,7 @@ distribution.
 */
 
 #include <allegro5/allegro5.h>
+#include <allegro5/allegro_image.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
@@ -44,13 +45,17 @@ int main(int argc, char* argv[])
 	double start_time;
 	WZ_WIDGET* gui;
 	WZ_DEF_THEME theme;
+	WZ_SKIN_THEME skin_theme;
 	WZ_WIDGET* wgt;
 	bool done = false;
+	bool fancy_theme = true;
+
 	al_init();
 	al_init_primitives_addon();
 	al_init_font_addon();
 	al_init_primitives_addon();
 	al_init_ttf_addon();
+	al_init_image_addon();
 #ifdef IPHONE
 	size = 0.5;
 	al_set_new_display_option(ALLEGRO_SUPPORTED_ORIENTATIONS, ALLEGRO_DISPLAY_ORIENTATION_LANDSCAPE, 1);
@@ -83,13 +88,35 @@ int main(int argc, char* argv[])
 	memset(&theme, 0, sizeof(theme));
 	memcpy(&theme, &wz_def_theme, sizeof(theme));
 	theme.font = font;
-	theme.color1 = al_map_rgba_f(0, 0.3, 0, 1);
+	theme.color1 = al_map_rgba_f(0, 0.6, 0, 1);
 	theme.color2 = al_map_rgba_f(1, 1, 0, 1);
+
+	//al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
+	/*
+	Define a custom skin theme
+	wz_skin_theme is a global vtable defined by the header
+	*/
+	memset(&skin_theme, 0, sizeof(skin_theme));
+	memcpy(&skin_theme, &wz_skin_theme, sizeof(skin_theme));
+	skin_theme.theme.font = font;
+	skin_theme.theme.color1 = al_map_rgba_f(0, 0.6, 0, 1);
+	skin_theme.theme.color2 = al_map_rgba_f(1, 1, 0, 1);
+	skin_theme.button_up_bitmap = al_load_bitmap("button_up.png");
+	skin_theme.button_down_bitmap =al_load_bitmap("button_down.png");
+	skin_theme.box_bitmap = al_load_bitmap("box.png");
+	skin_theme.editbox_bitmap = al_load_bitmap("editbox.png");
+	skin_theme.scroll_track_bitmap = al_load_bitmap("scroll_track.png");
+	skin_theme.slider_bitmap = al_load_bitmap("slider.png");
+
+	//al_set_new_bitmap_flags(0);
+
+	wz_init_skin_theme(&skin_theme);
+
 	/*
 	Define root gui element
 	*/
 	gui = wz_create_widget(0, 0, 0, -1);
-	wz_set_theme(gui, (WZ_THEME*)&theme);
+	wz_set_theme(gui, (WZ_THEME*)&skin_theme);
 	/*
 	Define all other gui elements, fill_layout is an automatic layout container
 	*/
@@ -98,7 +125,7 @@ int main(int argc, char* argv[])
 	wz_create_toggle_button(gui, 0, 0, 200 * size, 50 * size, al_ustr_new("Toggle 1"), 1, 1, 5);
 	wz_create_toggle_button(gui, 0, 0, 200 * size, 50 * size, al_ustr_new("Toggle 2"), 1, 1, 6);
 	wz_create_toggle_button(gui, 0, 0, 200 * size, 50 * size, al_ustr_new("Toggle 3"), 1, 1, 7);
-	wz_create_button(gui, 0, 0, 200 * size, 50 * size, al_ustr_new("Button"), 1, -1);
+	wz_create_button(gui, 0, 0, 200 * size, 50 * size, al_ustr_new("Switch Themes"), 1, 666);
 	wgt = (WZ_WIDGET*)wz_create_button(gui, 0, 0, 200 * size, 50 * size, al_ustr_new("Quit"), 1, 1);
 	wz_set_shortcut(wgt, ALLEGRO_KEY_Q, ALLEGRO_KEYMOD_CTRL);
 	wz_create_fill_layout(gui, 350 * size, 50 * size, 300 * size, 450 * size, 50 * size, 20 * size, WZ_ALIGN_CENTRE, WZ_ALIGN_TOP, -1);
@@ -159,6 +186,14 @@ int main(int argc, char* argv[])
 								done = true;
 								break;
 							}
+							case 666:
+							{
+								fancy_theme = !fancy_theme;
+								if(fancy_theme)
+									wz_set_theme(gui, (WZ_THEME*)&skin_theme);
+								else
+									wz_set_theme(gui, (WZ_THEME*)&theme);
+							}
 						}
 
 						break;
@@ -170,7 +205,7 @@ int main(int argc, char* argv[])
 				break;
 		}
 
-		al_clear_to_color(al_map_rgba_f(0, 0, 0, 1));
+		al_clear_to_color(al_map_rgba_f(0.5, 0.5, 0.7, 1));
 		/*
 		Draw the gui
 		*/
@@ -178,6 +213,14 @@ int main(int argc, char* argv[])
 		al_wait_for_vsync();
 		al_flip_display();
 	}
+
+	al_destroy_bitmap(skin_theme.box_bitmap);
+	al_destroy_bitmap(skin_theme.button_up_bitmap);
+	al_destroy_bitmap(skin_theme.button_down_bitmap);
+	al_destroy_bitmap(skin_theme.scroll_track_bitmap);
+	al_destroy_bitmap(skin_theme.slider_bitmap);
+	al_destroy_bitmap(skin_theme.editbox_bitmap);
+	wz_destroy_skin_theme(&skin_theme);
 
 	/*
 	Destroy the gui

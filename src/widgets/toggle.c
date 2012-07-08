@@ -38,7 +38,6 @@ int wz_toggle_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 	int ret = 1;
 	WZ_BUTTON* but = (WZ_BUTTON*)wgt;
 	WZ_TOGGLE* tog = (WZ_TOGGLE*)wgt;
-	float x, y;
 
 	switch(event->type)
 	{

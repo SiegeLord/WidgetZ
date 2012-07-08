@@ -264,6 +264,7 @@ void wz_draw_multi_text(float x, float y, float w, float h, int halign, int vali
 			{
 				ALLEGRO_USTR_INFO info;
 				ALLEGRO_USTR* token = al_ref_ustr(&info, text, start, end);
+				//printf("%f %f %s\n", x, cur_y, al_cstr(token));
 				wz_draw_single_text(x, cur_y, w, h, halign, WZ_ALIGN_TOP, color, font, token);
 			}
 			cur_y += text_height;

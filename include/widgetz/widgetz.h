@@ -2,6 +2,7 @@
 
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
+#include "widgetz/widgetz_nine_patch.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -60,6 +61,67 @@ typedef struct WZ_DEF_THEME
 	int pad[3];
 
 } WZ_DEF_THEME;
+
+/*
+Struct: WZ_SKIN_THEME
+
+A simple skinnable theme struct
+
+
+Inherits From:
+<WZ_DEF_THEME>
+
+See Also:
+<wz_init_skin_theme>, <wz_destroy_skin_theme>
+*/
+typedef struct WZ_SKIN_THEME
+{
+	WZ_DEF_THEME theme;
+
+	WZ_NINE_PATCH_BITMAP* button_up_patch;
+	WZ_NINE_PATCH_BITMAP* button_down_patch;
+	WZ_NINE_PATCH_BITMAP* box_patch;
+	WZ_NINE_PATCH_BITMAP* editbox_patch;
+	WZ_NINE_PATCH_BITMAP* scroll_track_patch;
+	WZ_NINE_PATCH_BITMAP* slider_patch;
+
+	/*
+	Variable: button_up_bitmap
+	Bitmap to use to draw buttons when they are unpressed
+	*/
+	ALLEGRO_BITMAP* button_up_bitmap;
+
+	/*
+	Variable: button_up_bitmap
+	Bitmap to use to draw buttons when they are pressed
+	*/
+	ALLEGRO_BITMAP* button_down_bitmap;
+
+	/*
+	Variable: box_bitmap
+	Bitmap to use to draw boxes
+	*/
+	ALLEGRO_BITMAP* box_bitmap;
+
+	/*
+	Variable: editbox_bitmap
+	Bitmap to use to draw edit boxes
+	*/
+	ALLEGRO_BITMAP* editbox_bitmap;
+
+	/*
+	Variable: scroll_track_bitmap
+	Bitmap to use to draw scrollbar tracks
+	*/
+	ALLEGRO_BITMAP* scroll_track_bitmap;
+
+	/*
+	Variable: slider_bitmap
+	Bitmap to use to draw scrollbar sliders
+	*/
+	ALLEGRO_BITMAP* slider_bitmap;
+
+} WZ_SKIN_THEME;
 
 typedef struct WZ_SHORTCUT
 {
@@ -382,6 +444,10 @@ enum
 };
 
 extern const WZ_DEF_THEME wz_def_theme;
+extern const WZ_SKIN_THEME wz_skin_theme;
+
+void wz_init_skin_theme(WZ_SKIN_THEME* theme);
+void wz_destroy_skin_theme(WZ_SKIN_THEME* theme);
 
 void wz_register_sources(WZ_WIDGET* wgt, ALLEGRO_EVENT_QUEUE* queue);
 void wz_set_theme(WZ_WIDGET* wgt, WZ_THEME* theme);
@@ -406,6 +472,7 @@ void wz_show(WZ_WIDGET* wgt, int show);
 void wz_enable(WZ_WIDGET* wgt, int enable);
 void wz_set_shortcut(WZ_WIDGET* wgt, int keycode, int modifiers);
 
+void wz_draw_multi_text(float x, float y, float w, float h, int halign, int valign, ALLEGRO_COLOR color, ALLEGRO_FONT* font, ALLEGRO_USTR* text);
 ALLEGRO_COLOR wz_blend_colors(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2, float frac);
 ALLEGRO_COLOR wz_scale_color(ALLEGRO_COLOR c, float scale);
 

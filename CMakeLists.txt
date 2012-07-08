@@ -8,8 +8,8 @@ include_directories(
 file(GLOB_RECURSE SOURCES "src/*.c")
 
 if(NOT USE_INTERNAL_LIB)
-	set(EXAMPLE_DATA "DejaVuSans.ttf")
-	set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -g")
+	set(EXAMPLE_DATA "DejaVuSans.ttf;box.png;button_up.png;button_down.png;scroll_track.png;slider.png;editbox.png")
+	set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g")
 
 	set(ALLEGRO_SUB_VERSION "0" CACHE STRING "Sub version of Allegro to use (0 - stable, 1 - unstable")
 	set(ALLEGRO_WIP_VERSION "0" CACHE STRING "WIP version of Allegro to use")
