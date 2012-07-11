@@ -144,16 +144,22 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			else if(event->mouse.dx != 0 || event->mouse.dy != 0)
 			{
-				if(wz_widget_rect_test(wgt, x, y))
+				ret = 0;
+				if(wz_widget_rect_test(wgt, x, y) && !(wgt->flags & WZ_STATE_HAS_FOCUS))
+				{
 					wz_ask_parent_for_focus(wgt);
+					ret = 1;
+				}
 
 				if(scl->down)
 				{
 					if(set_scroll_pos(scl, x, y))
+					{
 						wz_trigger(wgt);
+						ret = 1;
+					}
 				}
 
-				ret = 0;
 			}
 			else
 			{
@@ -205,11 +211,16 @@ int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			}
 			else
 			{
-				scl->down = 0;
-				wgt->hold_focus = 0;
+				if(scl->down)
+				{
+					scl->down = 0;
+					wgt->hold_focus = 0;
+				}
+				else
+				{
+					ret = 0;
+				}
 			}
-
-			ret = 0;
 			break;
 		}
 		case ALLEGRO_EVENT_KEY_CHAR:

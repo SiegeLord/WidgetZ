@@ -88,7 +88,7 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			{
 				ret = 0;
 			}
-			else if((event->mouse.dx != 0 || event->mouse.dy != 0) && wz_widget_rect_test(wgt, x, y))
+			else if((event->mouse.dx != 0 || event->mouse.dy != 0) && wz_widget_rect_test(wgt, x, y) && !(wgt->flags & WZ_STATE_HAS_FOCUS))
 			{
 				wz_ask_parent_for_focus(wgt);
 			}
@@ -215,16 +215,14 @@ int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
 			else if(but->down == 1 && event->mouse.button == 1)
 			{
 				if(wz_widget_rect_test(wgt, x, y))
-				{
 					wz_trigger(wgt);
-				}
-				else
-				{
-					ret = 0;
-				}
 
 				but->down = 0;
 				wgt->hold_focus = 0;
+			}
+			else
+			{
+				ret = 0;
 			}
 
 			break;
