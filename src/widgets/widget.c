@@ -37,7 +37,7 @@ Returns:
 
 1 if the event was handled by the widget, 0 otherwise
 */
-int wz_widget_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
+int wz_widget_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event)
 {
 	int ret = 1;
 

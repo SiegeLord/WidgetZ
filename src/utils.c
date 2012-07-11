@@ -239,7 +239,7 @@ Note that the first widget gets the event whether it is focused or not.
 Returns:
 1 if the event was handled by some widget, 0 if it was not
 */
-int wz_send_event(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
+int wz_send_event(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event)
 {
 	WZ_WIDGET* child = wgt->first_child;
 
@@ -278,7 +278,7 @@ Broadcasts an event to a widget, and to all of its children, propagating down th
 Returns:
 1 if the event was handled by some widget, 0 if it was not
 */
-int wz_broadcast_event(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
+int wz_broadcast_event(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event)
 {
 	int ret = 0;
 	WZ_WIDGET* child = wgt->first_child;

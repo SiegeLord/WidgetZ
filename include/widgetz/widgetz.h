@@ -189,7 +189,7 @@ typedef struct WZ_WIDGET
 	*/
 	int id;
 
-	int (*proc)(struct WZ_WIDGET*, ALLEGRO_EVENT*);
+	int (*proc)(struct WZ_WIDGET*, const ALLEGRO_EVENT*);
 } WZ_WIDGET;
 
 /*
@@ -456,8 +456,8 @@ void wz_attach(WZ_WIDGET* wgt, WZ_WIDGET* parent);
 void wz_attach_after(WZ_WIDGET* wgt, WZ_WIDGET* sib);
 void wz_attach_before(WZ_WIDGET* wgt, WZ_WIDGET* sib);
 
-int wz_send_event(WZ_WIDGET* wgt, ALLEGRO_EVENT* event);
-int wz_broadcast_event(WZ_WIDGET* wgt, ALLEGRO_EVENT* event);
+int wz_send_event(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event);
+int wz_broadcast_event(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event);
 
 void wz_update(WZ_WIDGET* wgt, double dt);
 void wz_draw(WZ_WIDGET* wgt);

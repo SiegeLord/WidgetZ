@@ -33,7 +33,7 @@ Function: wz_button_proc
 See also:
 <wz_widget_proc>
 */
-int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
+int wz_button_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event)
 {
 	int ret = 1;
 	WZ_BUTTON* but = (WZ_BUTTON*)wgt;

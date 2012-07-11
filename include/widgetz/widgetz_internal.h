@@ -18,14 +18,14 @@ int wz_get_text_pos(ALLEGRO_FONT* font, ALLEGRO_USTR* text, float x);
 void wz_def_draw_box(struct WZ_THEME* theme, float x, float y, float w, float h, int style);
 void wz_def_draw_button(WZ_THEME* theme, float x, float y, float w, float h, ALLEGRO_USTR* text, int style);
 
-int wz_box_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event);
-int wz_widget_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event);
-int wz_toggle_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event);
-int wz_button_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event);
-int wz_fill_layout_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event);
-int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event);
-int wz_textbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event);
-int wz_editbox_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event);
+int wz_box_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event);
+int wz_widget_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event);
+int wz_toggle_button_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event);
+int wz_button_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event);
+int wz_fill_layout_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event);
+int wz_scroll_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event);
+int wz_textbox_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event);
+int wz_editbox_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event);
 
 void wz_init_widget(WZ_WIDGET* wgt, WZ_WIDGET* parent, float x, float y, float w, float h, int id);
 void wz_init_grid_layout(WZ_FILL_LAYOUT* box, WZ_WIDGET* parent, float x, float y, float w, float h, float hspace, float vspace, int halign, int valign, int id);

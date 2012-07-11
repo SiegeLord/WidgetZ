@@ -65,7 +65,7 @@ Function: wz_scroll_proc
 See also:
 <wz_widget_proc>
 */
-int wz_scroll_proc(WZ_WIDGET* wgt, ALLEGRO_EVENT* event)
+int wz_scroll_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event)
 {
 	int ret = 1;
 	WZ_SCROLL* scl = (WZ_SCROLL*)wgt;
