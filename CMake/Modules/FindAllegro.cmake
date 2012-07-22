@@ -5,7 +5,7 @@
 # ALLEGRO_FOUND - True if found
 # ALLEGRO_DEFINITIONS - compiler switches used for Allegro
 
-set(ALLEGRO_NAMES allegro allegro_acodec allegro_audio allegro allegro_color allegro_font allegro_image allegro_memfile allegro_primitives allegro_ttf)
+set(ALLEGRO_NAMES "allegro${NAME_SUFFIX}" "allegro_acodec${NAME_SUFFIX}" "allegro_audio${NAME_SUFFIX}" "allegro${NAME_SUFFIX}" "allegro_color${NAME_SUFFIX}" "allegro_font${NAME_SUFFIX}" "allegro_image${NAME_SUFFIX}" "allegro_memfile${NAME_SUFFIX}" "allegro_primitives${NAME_SUFFIX}" "allegro_ttf${NAME_SUFFIX}")
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	list(APPEND ALLEGRO_NAMES allegro_main)
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
