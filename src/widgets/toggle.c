@@ -36,18 +36,29 @@ See also:
 int wz_toggle_button_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event)
 {
 	int ret = 1;
+	float x, y;
 	WZ_BUTTON* but = (WZ_BUTTON*)wgt;
 	WZ_TOGGLE* tog = (WZ_TOGGLE*)wgt;
 
 	switch(event->type)
 	{
+#if (ALLEGRO_SUB_VERSION > 0)
+		case ALLEGRO_EVENT_TOUCH_BEGIN:
+			x = event->touch.x;
+			y = event->touch.y;
+#endif
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 		{
+			if(event->type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+			{
+				x = event->mouse.x;
+				y = event->mouse.y;
+			}
 			if(wgt->flags & WZ_STATE_DISABLED)
 			{
 				ret = 0;
 			}
-			else if(event->mouse.button == 1 && wz_widget_rect_test(wgt, event->mouse.x, event->mouse.y))
+			else if(wz_widget_rect_test(wgt, x, y))
 			{
 				wz_ask_parent_for_focus(wgt);
 				wz_trigger(wgt);
@@ -87,6 +98,9 @@ int wz_toggle_button_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event)
 			return wz_widget_proc(wgt, event);
 			break;
 		}
+#if (ALLEGRO_SUB_VERSION > 0)
+		case ALLEGRO_EVENT_TOUCH_END:
+#endif
 		case ALLEGRO_EVENT_KEY_UP:
 		case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
 		{

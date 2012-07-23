@@ -116,7 +116,7 @@ int wz_button_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event)
 			{
 				ret = 0;
 			}
-			else if(event->mouse.button == 1 && wz_widget_rect_test(wgt, x, y))
+			else if(wz_widget_rect_test(wgt, x, y))
 			{
 				wz_ask_parent_for_focus(wgt);
 				but->down = 1;
@@ -212,7 +212,7 @@ int wz_button_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event)
 			{
 				ret = 0;
 			}
-			else if(but->down == 1 && event->mouse.button == 1)
+			else if(but->down == 1)
 			{
 				if(wz_widget_rect_test(wgt, x, y))
 					wz_trigger(wgt);
