@@ -85,8 +85,8 @@ int wz_fill_layout_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event)
 							/*
 							I.e. we actually added something
 							*/
-							it = row_start;
 							float x = 0;
+							it = row_start;
 
 							if(box->h_align == WZ_ALIGN_LEFT)
 								x = box->h_spacing;
