@@ -280,7 +280,7 @@ int wz_get_text_pos(ALLEGRO_FONT* font, ALLEGRO_USTR* text, float x)
 		for(ii = 0; ii <= len; ii++)
 		{
 			int offset = al_ustr_offset(text, ii);
-			ALLEGRO_USTR* str = al_ref_ustr(&info, text, 0, offset);
+			ALLEGRO_USTR* str = (ALLEGRO_USTR *)al_ref_ustr(&info, text, 0, offset);
 			diff = fabs(x - al_get_ustr_width(font, str));
 
 			if(diff > old_diff)

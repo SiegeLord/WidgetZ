@@ -144,7 +144,7 @@ int wz_find_eol(ALLEGRO_USTR* text, ALLEGRO_FONT* font, float max_width, int sta
 		/*
 		Check to see if the token fits
 		*/
-		token = al_ref_ustr(&info, text, start, b);
+		token = (ALLEGRO_USTR *)al_ref_ustr(&info, text, start, b);
 		len = al_get_ustr_width(font, token);
 
 		if(len < max_width || first)
@@ -263,7 +263,7 @@ void wz_draw_multi_text(float x, float y, float w, float h, int halign, int vali
 			ret = wz_find_eol(text, font, w, start, &end);
 			{
 				ALLEGRO_USTR_INFO info;
-				ALLEGRO_USTR* token = al_ref_ustr(&info, text, start, end);
+				ALLEGRO_USTR* token = (ALLEGRO_USTR *)al_ref_ustr(&info, text, start, end);
 				//printf("%f %f %s\n", x, cur_y, al_cstr(token));
 				wz_draw_single_text(x, cur_y, w, h, halign, WZ_ALIGN_TOP, color, font, token);
 			}
@@ -384,7 +384,7 @@ void wz_def_draw_editbox(struct WZ_THEME* theme, float x, float y, float w, floa
 	ALLEGRO_COLOR text_col;
 	len = len + 1 > len2 ? len2 : len + 1;
 	offset = al_ustr_offset(text, len);
-	token = al_ref_ustr(&info, text, 0, offset);
+	token = (ALLEGRO_USTR *)al_ref_ustr(&info, text, 0, offset);
 	border_col = thm->color1;
 	text_col = thm->color2;
 
@@ -412,7 +412,7 @@ void wz_def_draw_editbox(struct WZ_THEME* theme, float x, float y, float w, floa
 			float len;
 			float halfheight;
 			offset = al_ustr_offset(text, cursor_pos);
-			token = al_ref_ustr(&info, text, 0, offset);
+			token = (ALLEGRO_USTR *)al_ref_ustr(&info, text, 0, offset);
 			len = al_get_ustr_width(thm->font, token);
 			halfheight = al_get_font_line_height(thm->font) / 2.0f;
 			al_draw_line(x + 2 + len, y + 2 + h / 2 - halfheight, x + 2 + len, y + 2 + h / 2 + halfheight, text_col, 1);

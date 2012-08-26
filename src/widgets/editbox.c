@@ -32,7 +32,7 @@ void wz_snap_editbox(WZ_EDITBOX* box)
 	int scroll_offset = al_ustr_offset(box->text, box->scroll_pos);
 	int cursor_offset;
 	ALLEGRO_USTR_INFO info;
-	ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, scroll_offset, size);
+	ALLEGRO_USTR* text = (ALLEGRO_USTR *)al_ref_ustr(&info, box->text, scroll_offset, size);
 	int max_rel_cursor_pos = wz_get_text_pos(font, text, wgt->w);
 
 	if(box->cursor_pos < box->scroll_pos)
@@ -62,7 +62,7 @@ void wz_snap_editbox(WZ_EDITBOX* box)
 
 	scroll_offset = al_ustr_offset(box->text, box->scroll_pos);
 	cursor_offset = al_ustr_offset(box->text, box->cursor_pos);
-	text = al_ref_ustr(&info, box->text, scroll_offset, cursor_offset);
+	text = (ALLEGRO_USTR *)al_ref_ustr(&info, box->text, scroll_offset, cursor_offset);
 
 	if(al_get_ustr_width(font, text) > wgt->w)
 	{
@@ -98,7 +98,7 @@ int wz_editbox_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event)
 				int size = al_ustr_size(box->text);
 				int scroll_offset = al_ustr_offset(box->text, box->scroll_pos);
 				ALLEGRO_USTR_INFO info;
-				ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, scroll_offset, size);
+				ALLEGRO_USTR* text = (ALLEGRO_USTR *)al_ref_ustr(&info, box->text, scroll_offset, size);
 				int pos = box->cursor_pos - box->scroll_pos;
 				int flags = 0;
 
@@ -122,7 +122,7 @@ int wz_editbox_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event)
 			{
 				int len = al_ustr_length(box->text);
 				ALLEGRO_USTR_INFO info;
-				ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, box->scroll_pos, len - 1);
+				ALLEGRO_USTR* text = (ALLEGRO_USTR *)al_ref_ustr(&info, box->text, box->scroll_pos, len - 1);
 				ALLEGRO_FONT* font = wgt->theme->get_font(wgt->theme, 0);
 				wz_ask_parent_for_focus(wgt);
 				box->cursor_pos = wz_get_text_pos(font, text, event->mouse.x - wgt->x) + box->scroll_pos;
@@ -143,7 +143,7 @@ int wz_editbox_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event)
 			{
 				int len = al_ustr_length(box->text);
 				ALLEGRO_USTR_INFO info;
-				ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, box->scroll_pos, len - 1);
+				ALLEGRO_USTR* text = (ALLEGRO_USTR *)al_ref_ustr(&info, box->text, box->scroll_pos, len - 1);
 				ALLEGRO_FONT* font = wgt->theme->get_font(wgt->theme, 0);
 				wz_ask_parent_for_focus(wgt);
 				box->cursor_pos = wz_get_text_pos(font, text, event->touch.x - wgt->x) + box->scroll_pos;
