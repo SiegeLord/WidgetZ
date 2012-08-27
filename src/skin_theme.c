@@ -258,7 +258,7 @@ void wz_skin_draw_editbox(struct WZ_THEME* theme, float x, float y, float w, flo
 	pad.bottom = 0;
 	len = len + 1 > len2 ? len2 : len + 1;
 	offset = al_ustr_offset(text, len);
-	token = al_ref_ustr(&info, text, 0, offset);
+	token = (ALLEGRO_USTR *)al_ref_ustr(&info, text, 0, offset);
 	border_col = def->color1;
 	text_col = def->color2;
 
@@ -292,7 +292,7 @@ void wz_skin_draw_editbox(struct WZ_THEME* theme, float x, float y, float w, flo
 			float len;
 			float halfheight;
 			offset = al_ustr_offset(text, cursor_pos);
-			token = al_ref_ustr(&info, text, 0, offset);
+			token = (ALLEGRO_USTR *)al_ref_ustr(&info, text, 0, offset);
 			len = al_get_ustr_width(def->font, token);
 			halfheight = al_get_font_line_height(def->font) / 2.0f;
 			al_draw_line(x + pad.left + len, y + mh - halfheight, x + pad.left + len, y + mh + halfheight, text_col, 1);
