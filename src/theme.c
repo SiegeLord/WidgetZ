@@ -128,7 +128,7 @@ int wz_find_eol(ALLEGRO_USTR* text, ALLEGRO_FONT* font, float max_width, int sta
 	while(1)
 	{
 		ALLEGRO_USTR_INFO info;
-		ALLEGRO_USTR* token;
+		const ALLEGRO_USTR* token;
 		float len;
 		/*
 		Find the end of current token
@@ -263,9 +263,9 @@ void wz_draw_multi_text(float x, float y, float w, float h, int halign, int vali
 			ret = wz_find_eol(text, font, w, start, &end);
 			{
 				ALLEGRO_USTR_INFO info;
-				ALLEGRO_USTR* token = al_ref_ustr(&info, text, start, end);
+				const ALLEGRO_USTR* token = al_ref_ustr(&info, text, start, end);
 				//printf("%f %f %s\n", x, cur_y, al_cstr(token));
-				wz_draw_single_text(x, cur_y, w, h, halign, WZ_ALIGN_TOP, color, font, token);
+				wz_draw_single_text(x, cur_y, w, h, halign, WZ_ALIGN_TOP, color, font, (ALLEGRO_USTR*)token);
 			}
 			cur_y += text_height;
 		}
@@ -379,7 +379,7 @@ void wz_def_draw_editbox(struct WZ_THEME* theme, float x, float y, float w, floa
 	int len2 = al_ustr_length(text);
 	int offset;
 	ALLEGRO_USTR_INFO info;
-	ALLEGRO_USTR* token;
+	const ALLEGRO_USTR* token;
 	ALLEGRO_COLOR border_col;
 	ALLEGRO_COLOR text_col;
 	len = len + 1 > len2 ? len2 : len + 1;
@@ -402,7 +402,7 @@ void wz_def_draw_editbox(struct WZ_THEME* theme, float x, float y, float w, floa
 	wz_draw_3d_rectangle(x, y, x + w, y + h, 1, border_col, true);
 	al_get_clipping_rectangle(&cx, &cy, &cw, &ch);
 	al_set_clipping_rectangle(x + 2, y + 2, w - 4, h - 4);
-	wz_draw_single_text(x + 2, y + 2, w - 4, h - 4, WZ_ALIGN_LEFT, WZ_ALIGN_CENTRE, text_col, thm->font, token);
+	wz_draw_single_text(x + 2, y + 2, w - 4, h - 4, WZ_ALIGN_LEFT, WZ_ALIGN_CENTRE, text_col, thm->font, (ALLEGRO_USTR*)token);
 	al_set_clipping_rectangle(cx, cy, cw, ch);
 
 	if(style & WZ_STYLE_FOCUSED)

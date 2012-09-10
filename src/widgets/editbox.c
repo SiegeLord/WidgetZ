@@ -32,8 +32,8 @@ void wz_snap_editbox(WZ_EDITBOX* box)
 	int scroll_offset = al_ustr_offset(box->text, box->scroll_pos);
 	int cursor_offset;
 	ALLEGRO_USTR_INFO info;
-	ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, scroll_offset, size);
-	int max_rel_cursor_pos = wz_get_text_pos(font, text, wgt->w);
+	const ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, scroll_offset, size);
+	int max_rel_cursor_pos = wz_get_text_pos(font, (ALLEGRO_USTR*)text, wgt->w);
 
 	if(box->cursor_pos < box->scroll_pos)
 	{
@@ -98,7 +98,7 @@ int wz_editbox_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event)
 				int size = al_ustr_size(box->text);
 				int scroll_offset = al_ustr_offset(box->text, box->scroll_pos);
 				ALLEGRO_USTR_INFO info;
-				ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, scroll_offset, size);
+				const ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, scroll_offset, size);
 				int pos = box->cursor_pos - box->scroll_pos;
 				int flags = 0;
 
@@ -107,7 +107,7 @@ int wz_editbox_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event)
 				else if(wgt->flags & WZ_STATE_HAS_FOCUS)
 					flags = WZ_STYLE_FOCUSED;
 
-				wgt->theme->draw_editbox(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, pos, text, flags);
+				wgt->theme->draw_editbox(wgt->theme, wgt->local_x, wgt->local_y, wgt->w, wgt->h, pos, (ALLEGRO_USTR*)text, flags);
 			}
 
 			break;
@@ -122,10 +122,10 @@ int wz_editbox_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event)
 			{
 				int len = al_ustr_length(box->text);
 				ALLEGRO_USTR_INFO info;
-				ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, box->scroll_pos, len - 1);
+				const ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, box->scroll_pos, len - 1);
 				ALLEGRO_FONT* font = wgt->theme->get_font(wgt->theme, 0);
 				wz_ask_parent_for_focus(wgt);
-				box->cursor_pos = wz_get_text_pos(font, text, event->mouse.x - wgt->x) + box->scroll_pos;
+				box->cursor_pos = wz_get_text_pos(font, (ALLEGRO_USTR*)text, event->mouse.x - wgt->x) + box->scroll_pos;
 			}
 			else
 				ret = 0;
@@ -143,10 +143,10 @@ int wz_editbox_proc(WZ_WIDGET* wgt, const ALLEGRO_EVENT* event)
 			{
 				int len = al_ustr_length(box->text);
 				ALLEGRO_USTR_INFO info;
-				ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, box->scroll_pos, len - 1);
+				const ALLEGRO_USTR* text = al_ref_ustr(&info, box->text, box->scroll_pos, len - 1);
 				ALLEGRO_FONT* font = wgt->theme->get_font(wgt->theme, 0);
 				wz_ask_parent_for_focus(wgt);
-				box->cursor_pos = wz_get_text_pos(font, text, event->touch.x - wgt->x) + box->scroll_pos;
+				box->cursor_pos = wz_get_text_pos(font, (ALLEGRO_USTR*)text, event->touch.x - wgt->x) + box->scroll_pos;
 			}
 			else
 				ret = 0;
