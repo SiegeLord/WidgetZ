@@ -17,7 +17,7 @@ if(NOT USE_INTERNAL_LIB)
 	include(FindPkgConfig)
 	set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMake/Modules")
 	find_package(Allegro REQUIRED)
-	find_package(FreeType REQUIRED)
+	find_package(Freetype REQUIRED)
 	include_directories(${ALLEGRO_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIR})
 	set(WZ_ALLEGRO_LDFLAGS ${ALLEGRO_LIBRARIES} ${FREETYPE_LIBRARIES})
 
