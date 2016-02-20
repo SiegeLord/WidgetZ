@@ -155,7 +155,7 @@ void wz_skin_draw_button(WZ_THEME* theme, float x, float y, float w, float h, AL
 #if defined(ALLEGRO_ANDROID) || defined(ALLEGRO_IPHONE)
 	if( (style & WZ_STYLE_FOCUSED) && !(style & WZ_STYLE_DOWN) )
 #else
-        if( (style & WZ_STYLE_FOCUSED) )
+	if( (style & WZ_STYLE_FOCUSED) )
 #endif
 	{
 		button_col = wz_scale_color(def->color1, 1.25);
