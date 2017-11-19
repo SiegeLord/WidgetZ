@@ -9,7 +9,11 @@ WidgetZ is a low-feature C GUI library for use with Allegro 5. It's features inc
 - Simple layout support
 - Uses Allegro 5's event system
 - Basic theme support
-- Cross platform (tested on Linux and Windows)
+- Cross platform
+
+## Documentation
+
+[Documentation](http://siegelord.github.com/WidgetZ)
 
 ## Requirements
 
