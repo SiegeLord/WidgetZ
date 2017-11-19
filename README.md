@@ -1,21 +1,6 @@
-{{{{{{{{{{{{{{{{{{{{{{{{{
-\                       /
-/       WidgetZ         \
-\                       /
-/     by SiegeLord      \
-\                       /
-}}}}}}}}}}}}}}}}}}}}}}}}} 
+# Widget Z
 
-0. Contents
-===========
-
-1. About
-2. Requirements
-3. Installation
-4. License
-
-1. About
-========
+![screenshot](screenshot.png "Screenshot")
 
 WidgetZ is a low-feature C GUI library for use with Allegro 5. It's features include:
 
@@ -26,29 +11,28 @@ WidgetZ is a low-feature C GUI library for use with Allegro 5. It's features inc
 - Basic theme support
 - Cross platform (tested on Linux and Windows)
 
-2. Requirements
-===============
+## Requirements
 
 - Allegro 5 (image, font and primitives addons)
 - CMake
 - NaturalDocs (documentation only)
 
-3. Installation
-===============
+## Installation
 
 Standard CMake building instructions apply. Starting in the WidgetZ root directory do:
 
+```
 mkdir build && cd build
 cmake ..
 make
 make install
+```
 
 Last command may need to be ran at root if you're on Linux. This will build the library and install it into the standard location. It will also build the example, which you can run from the build directory.
 
 If you want the documentation, run build_docs.sh script. It will generate HTML documentation in the docs/ folder.
 
-4. License
-==========
+## License
 
 WidgetZ is licensed using the ZLib license, reproduced in the LICENSE file. The 9 patch implementation was done by Matthew Leverton and its license is also in the LICENSE file.
 
