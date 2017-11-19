@@ -70,7 +70,12 @@ if(NOT USE_INTERNAL_LIB)
 	add_library(widgetz ${SOURCES})
 	target_link_libraries(widgetz ${WZ_ALLEGRO_LDFLAGS})
 
-	target_link_libraries(example widgetz ${WZ_ALLEGRO_LDFLAGS})
+	set(EXAMPLE_LIBS widgetz ${WZ_ALLEGRO_LDFLAGS})
+	if(NOT MSVC)
+		list(APPEND EXAMPLE_LIBS m)
+	endif()
+
+	target_link_libraries(example ${EXAMPLE_LIBS})
 	install(DIRECTORY "${WIDGETZ_SOURCE_DIR}/include/widgetz" DESTINATION include)
 	install(TARGETS widgetz ARCHIVE DESTINATION lib)
 else(NOT USE_INTERNAL_LIB)
