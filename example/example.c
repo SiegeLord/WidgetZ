@@ -88,8 +88,8 @@ int main(int argc, char* argv[])
 	memset(&theme, 0, sizeof(theme));
 	memcpy(&theme, &wz_def_theme, sizeof(theme));
 	theme.font = font;
-	theme.color1 = al_map_rgba_f(0, 0.6, 0, 1);
-	theme.color2 = al_map_rgba_f(1, 1, 0, 1);
+	theme.color1 = al_map_rgba_f(0.1, 0.1, 0.9, 1);
+	theme.color2 = al_map_rgba_f(1, 0.6, 0.1, 1);
 
 	//al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 	/*
@@ -99,10 +99,10 @@ int main(int argc, char* argv[])
 	memset(&skin_theme, 0, sizeof(skin_theme));
 	memcpy(&skin_theme, &wz_skin_theme, sizeof(skin_theme));
 	skin_theme.theme.font = font;
-	skin_theme.theme.color1 = al_map_rgba_f(0, 0.6, 0, 1);
-	skin_theme.theme.color2 = al_map_rgba_f(1, 1, 0, 1);
+	skin_theme.theme.color1 = al_map_rgba_f(0.1, 0.1, 0.9, 1);
+	skin_theme.theme.color2 = al_map_rgba_f(1, 0.6, 0.1, 1);
 	skin_theme.button_up_bitmap = al_load_bitmap("data/button_up.png");
-	skin_theme.button_down_bitmap =al_load_bitmap("data/button_down.png");
+	skin_theme.button_down_bitmap = al_load_bitmap("data/button_down.png");
 	skin_theme.box_bitmap = al_load_bitmap("data/box.png");
 	skin_theme.editbox_bitmap = al_load_bitmap("data/editbox.png");
 	skin_theme.scroll_track_bitmap = al_load_bitmap("data/scroll_track.png");
@@ -205,7 +205,7 @@ int main(int argc, char* argv[])
 				break;
 		}
 
-		al_clear_to_color(al_map_rgba_f(0.5, 0.5, 0.7, 1));
+		al_clear_to_color(al_map_rgb_f(0.0, 0.0, 0.0));
 		/*
 		Draw the gui
 		*/
