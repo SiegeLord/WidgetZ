@@ -13,7 +13,7 @@ WidgetZ is a low-feature C GUI library for use with Allegro 5. It's features inc
 
 ## Documentation
 
-[Documentation](http://siegelord.github.com/WidgetZ)
+[Documentation](https://siegelord.github.io/WidgetZ/)
 
 ## Requirements
 
